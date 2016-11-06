@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "build": "pug index.pug && stylus main.styl"
+    "clean": "rm index.html main.css",
+    "build": "npm run clean && ./node_modules/pug-cli/index.js index.pug && ./node_modules/stylus/bin/stylus main.styl"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   "homepage": "https://github.com/skorlir/fluffywaffles#readme",
   "devDependencies": {
     "pug": "^2.0.0-beta6",
+    "pug-cli": "^1.0.0-alpha6",
     "stylus": "^0.54.5"
   }
 }
