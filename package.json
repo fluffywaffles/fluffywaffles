@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "clean": "rm index.html main.css",
+    "clean": "rm -f index.html main.css",
     "build": "npm run clean && ./node_modules/pug-cli/index.js index.pug && ./node_modules/stylus/bin/stylus main.styl"
   },
   "repository": {
