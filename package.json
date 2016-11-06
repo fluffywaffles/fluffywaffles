@@ -1,0 +1,22 @@
+{
+  "name": "fluffywaffles.io",
+  "version": "0.0.0",
+  "description": "",
+  "scripts": {
+    "build": "pug index.pug && stylus main.styl"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skorlir/fluffywaffles.git"
+  },
+  "author": "@skorlir",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/skorlir/fluffywaffles/issues"
+  },
+  "homepage": "https://github.com/skorlir/fluffywaffles#readme",
+  "devDependencies": {
+    "pug": "^2.0.0-beta6",
+    "stylus": "^0.54.5"
+  }
+}
