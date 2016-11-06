@@ -1,2 +1,4 @@
 *.html
 *.css
+!build/*.html
+!build/*.css
