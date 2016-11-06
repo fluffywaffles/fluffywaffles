@@ -1,7 +1,7 @@
-var period = 30
+var amplitude = 20
+  , periods = (Math.random() * 3 + 3)|0
+  , period = 160 / periods
   , freq = (Math.PI * 2) / period
-  , amplitude = 20
-  , periods = (150 / period)|0 + 1
 
 var pts = Array(periods*period*2|0).fill(0)
 
