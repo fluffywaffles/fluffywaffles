@@ -58,7 +58,7 @@ console.log(`Group drips using paper.group.`)
 var drips_g = paper.group.apply(paper, drips)
 
 function randomScaleTransform () {
-  return 'scale(1 ' + ((Math.random()/2) + 0.5) + ')'
+  return 'scale(1 ' + ((0.7*Math.random()) + 0.65) + ')'
 }
 
 function dribble (drip, after) {
