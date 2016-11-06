@@ -1,6 +1,6 @@
 var base_amplitude = 20
   , periods = (Math.random() * 3 + 3)|0
-  , period = 160 / periods
+  , period = (160 / periods)|0
   , freq = (Math.PI * 2) / period
 
 console.log(`Syrup parameters:
@@ -11,18 +11,29 @@ console.log(`Syrup parameters:
 `)
 
 var pts = Array(periods*period*2|0).fill(0)
+var dollops = Array(periods).fill(0)
 
 console.log(`Generating cosine drips...`)
-var amplitude
+var amplitude, x, y
 for (i = 0; i < periods*period|0; i++) {
   if (i % (period|0) == 0) {
     amplitude = (Math.random()*base_amplitude + base_amplitude)
-    console.log(`Drip: ${i/period|0}
+    console.log(`
+    Drip: ${i/period|0}
       new amplitude: ${amplitude} (varying 1x → 2x of base)
     `)
   }
-  pts[2*i] = i
-  pts[2*i + 1] = (amplitude * Math.cos(freq * (i + (period/2)|0)) + amplitude)
+  pts[2*i] = x = i
+  pts[2*i + 1] = y = (amplitude * Math.cos(freq * (i + (period/2)|0)) + amplitude)
+  if (i % (period|0) == (period/2|0)) {
+    // "peak" (dip)
+    var dollop_radius = Math.random()*2 + 4
+    console.log(`
+      create dollop w/ radius: ${dollop_radius}
+      at offset x: ${x} y: ${y - dollop_radius}
+    `)
+    dollops.push({ r: dollop_radius, x: x, y: y - dollop_radius })
+  }
 }
 console.log(`Drips generated.`)
 
