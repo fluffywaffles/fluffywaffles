@@ -67,7 +67,9 @@ function dribble (drip, after) {
   `)
   drip.animate({
     transform: randomScaleTransform()
-  }, 1000, mina.linear, after)
+  }, 1000, n => {
+    return Math.log(n + 1)
+  }, after)
 }
 
 function perpetualDribble (drip) {
