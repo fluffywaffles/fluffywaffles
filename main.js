@@ -4,7 +4,7 @@ const listeners = {
 }
 
 function trigger (state_evt, args) {
-  listeners[state_evt].forEach(l => l.enabled && l.fn.apply(null, args))
+  listeners[state_evt].forEach(l => l.fn.apply(null, args))
 }
 
 function on (state_evt, listener) {
@@ -41,7 +41,7 @@ for (i = 0; i < periods*period|0; i++) {
   pts[2*i + 1] = y = (amplitude * Math.cos(freq * (i + (period/2)|0)) + amplitude)
   if (i % (period|0) == (period/2|0)) {
     // "peak" (dip)
-    var dollop_radius = Math.random()*2 + 3
+    var dollop_radius = 10 * 1 / periods
     console.log(`
       create dollop w/ radius: ${dollop_radius}
       at offset x: ${x} y: ${y}
@@ -115,32 +115,32 @@ function dribble (dripdrop, after) {
   //   dribble drip # ${drips.indexOf(drip)}
   // `)
   let scaleY = randomScaleTransform()
-  if ((scaleY - drip.data('scaleY')) < -0.1) {
+    , diff   = scaleY - drip.data('scaleY')
+  if (diff < -0.15) {
     const xy = paths[drips.indexOf(drip)]
     const ix = period/2|0
-    const evt_params = xy.slice(ix, ix+2).concat([ scaleY, drops[drips.indexOf(drip)] ])
+    const evt_params = xy.slice(ix, ix+2).concat([ scaleY, Math.abs(diff), drops[drips.indexOf(drip)] ])
     trigger('drop_fall', evt_params)
   }
   drip.data('scaleY', scaleY)
   drip.animate({
     transform: (new Snap.Matrix()).scale(1, scaleY)
   }, 1000, n => {
-    return Math.log(n + 1)
+    return 0.5*(Math.sin((n - 0.5) * Math.PI) + 1)
   }, after)
 }
 
 on('drop_fall', {
-  enabled: true,
-  fn: function (x, y, scaleY, drop) {
+  fn: function (x, y, scaleY, magnitude, drop) {
     console.log('drop fall!!', x, scaleY*y)
     drop.attr({
       fill: '#ffd200',
-      transform: (new Snap.Matrix()).scale(1, 2).translate(0, scaleY*drop.attr('cy') - 1.5*drop.attr('cy')),
-      r: 0.5*drop.data('max_r')
+      transform: (new Snap.Matrix()).scale(1, 2.5).translate(0, scaleY*drop.attr('cy') - 1.75*drop.attr('cy') - drop.attr('max_r')),
+      r: 0.75*drop.data('max_r')*(magnitude+1)
     })
     drop.animate({
-      r: drop.data('max_r'),
-      transform: (new Snap.Matrix()).translate(0, 150 - drop.attr('cy')).scale(1, 1)
+      r: drop.data('max_r')*(magnitude+1),
+      transform: (new Snap.Matrix()).translate(0, 150 - drop.attr('cy'))
     }, 1000, null, _ => {
       drop.animate({
         r: 0
