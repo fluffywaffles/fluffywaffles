@@ -31,7 +31,7 @@ console.log(`Generating cosine drips...`)
 var amplitude, x, y
 for (i = 0; i < periods*period|0; i++) {
   if (i % (period|0) == 0) {
-    amplitude = (Math.random()*base_amplitude + base_amplitude)
+    amplitude = (Math.random()*(15) + 25)
     console.log(`
     Drip: ${i/period|0}
       new amplitude: ${amplitude} (varying 1x → 2x of base)
