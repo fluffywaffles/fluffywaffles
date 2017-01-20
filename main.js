@@ -1,6 +1,7 @@
 // Events.
 const listeners = {
-  'drop_fall': []
+  'drop_fall': [],
+  'loader_die': []
 }
 
 function trigger (state_evt, args) {
@@ -179,14 +180,28 @@ on('drop_fall', {
   }
 })
 
-function perpetualDribble (dripdrop) {
+function dribbleUntilInterrupt (dripdrop) {
+  let stopSignal = false
+  function noop () {}
+
   function x () {
-    dribble(dripdrop, x)
+    dribble(dripdrop, stopSignal ? noop : x)
   }
   dribble(dripdrop, x)
+
+  on('loader_die', {
+    fn: _ => {
+      stopSignal = true
+    }
+  })
 }
 
 console.log(`Start perpetually dribbling all drips.`)
 dripdrops.map((d, i) => {
-  setTimeout(_ => perpetualDribble(d), i*1000/periods)
+  setTimeout(_ => dribbleUntilInterrupt(d), i*1000/periods)
 })
+
+/* After "loading" is finished (ie after I feel like you've appreciated my loader)...
+ *   Let's move everything into a header-type-deal. WAFFLES witha WIGGLE.
+ *   We can do the transitioning using CSS classes. Once the load ends, kill the animation.
+ */
