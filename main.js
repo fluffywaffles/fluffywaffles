@@ -1,4 +1,4 @@
-//
+// Events.
 const listeners = {
   'drop_fall': []
 }
@@ -9,9 +9,23 @@ function trigger (state_evt, args) {
 
 function on (state_evt, listener) {
   listeners[state_evt].push(listener)
+  return listeners.length-1
 }
 
-//
+function off (state_evt, index) {
+  listeners.splice(index, 1)
+}
+
+function kill (state_evt) {
+  listeners[state_evt].length = 0
+}
+
+// Fancy wuffles.
+/* BUG(jordan): One irritating bug persists in this, even through all the tweaking. Sometimes the
+ *   timing is off juuuust enough that a drop will not have a chance to compress at the end of its
+ *   fall before the next begins falling, and so it will appear to disappear instead of cleanly
+ *   dissipating into the "ground." Not very noticeable, but very frustrating.
+ */
 var base_amplitude = 20
   , periods = (Math.random() * 3 + 3)|0
   , period = (160 / periods)|0
@@ -111,32 +125,47 @@ function randomScaleTransform () {
 
 function dribble (dripdrop, after) {
   let drip = dripdrop.select('.drip')
-  // console.debug(`
-  //   dribble drip # ${drips.indexOf(drip)}
-  // `)
   let scaleY = randomScaleTransform()
     , diff   = scaleY - drip.data('scaleY')
   if (diff < -0.15) {
     const xy = paths[drips.indexOf(drip)]
     const ix = period/2|0
-    const evt_params = xy.slice(ix, ix+2).concat([ scaleY, Math.abs(diff), drops[drips.indexOf(drip)] ])
+    const evt_params =
+      xy.slice(ix, ix+2)
+        .concat([ scaleY, Math.abs(diff), drops[drips.indexOf(drip)] ])
     trigger('drop_fall', evt_params)
   }
   drip.data('scaleY', scaleY)
   drip.animate({
-    transform: (new Snap.Matrix()).scale(1, scaleY)
-  }, 1000, n => {
-    return 0.5*(Math.sin((n - 0.5) * Math.PI) + 1)
-  }, after)
+      transform: (new Snap.Matrix()).scale(1, scaleY)
+    },
+    1000, n => {
+      // NOTE(jordan): Wonky sinusoidal timing function looks nice.
+      return 0.5*(Math.sin((n - 0.5) * Math.PI) + 1)
+    }, after)
 }
 
 on('drop_fall', {
   fn: function (x, y, scaleY, magnitude, drop) {
     console.log('drop fall!!', x, scaleY*y)
+
+    const adjustedRadius = 0.75 /* magickk */ * drop.data('max_r') * (magnitude+1)
+
+    const yOffset =
+        scaleY * drop.attr('cy')
+      - 1.75 /* magic numberrr */ * drop.attr('cy')
+      - drop.attr('max_r')
+    //---------------------------------------------
+    //= yOffset
+
+    const txf = new Snap.Matrix()
+      .scale(1, 2.5)
+      .translate(0, yOffset)
+
     drop.attr({
       fill: '#ffd200',
-      transform: (new Snap.Matrix()).scale(1, 2.5).translate(0, scaleY*drop.attr('cy') - 1.75*drop.attr('cy') - drop.attr('max_r')),
-      r: 0.75*drop.data('max_r')*(magnitude+1)
+      transform: txf,
+      r: adjustedRadius
     })
     drop.animate({
       r: drop.data('max_r')*(magnitude+1),
