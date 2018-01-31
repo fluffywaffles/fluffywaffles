@@ -134,6 +134,10 @@ function dribble (dripdrop, after) {
     const evt_params =
       xy.slice(ix, ix+2)
         .concat([ scaleY, Math.abs(diff), drops[drips.indexOf(drip)] ])
+    // FIXME(jordan): this may be triggered while a drop is already falling, causing it to disappear
+    // when its drop starts over. We might be able to generate drops instead of doing things the way
+    // we do currently, where each one is created once and then reused. It's another cache
+    // invalidation bug! Well, indirectly. At least it's actually one of the "hard things".
     trigger('drop_fall', evt_params)
   }
   drip.data('scaleY', scaleY)
