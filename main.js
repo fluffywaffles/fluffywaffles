@@ -28,7 +28,7 @@ function kill (state_evt) {
  *   dissipating into the "ground." Not very noticeable, but very frustrating.
  */
 var base_amplitude = 20
-  , periods = (Math.random() * 3 + 3)|0
+  , periods = (Math.random() * 2 + 3)|0
   , period = (160 / periods)|0
   , freq = (Math.PI * 2) / period
 
