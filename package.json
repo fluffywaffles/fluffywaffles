@@ -6,9 +6,10 @@
     "clean": "rm -f index.html main.css",
     "build": "npm run clean && ./node_modules/pug-cli/index.js index.pug && ./node_modules/stylus/bin/stylus main.styl",
     "dev:pug": "pug -w *.pug &",
-    "dev:styl": "stylus -w *.styl &",
-    "dev:srv": "browser-sync start --config bs-config.js",
-    "develop": "npm run dev:pug && npm run dev:styl && npm run dev:srv"
+    "dev:stylus": "stylus -w *.styl &",
+    "dev:serve": "browser-sync start --config bs-config.js",
+    "develop": "npm run dev:pug && npm run dev:stylus && npm run dev:serve",
+    "start": "npm run develop"
   },
   "repository": {
     "type": "git",
