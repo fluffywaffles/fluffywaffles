@@ -1,37 +1,36 @@
 html, body
   margin 0 auto
-  height 100%
-  width 100%
+  min-height 100%
+
+header
+  padding-top 50px
+  height 265px // HACK(jordan): womp womp
+  display flex
+  justify-content center
 
 waffle_yellow=#ffff00
 waffle_dip=#ffe600
 waffle_edge=#ffd200
 waffle_font=#ffbe00
 
-.fluffywaffles-big-header
-  background yellow
-  height 100%
+section.fluffywaffles-logo
+  width 200px
+  height 150px
+  position relative
 
-  .fluffywaffles-logo
-    width 200px
-    height 150px
+  object.logo
+    background url('./fluffywaffles-notext-lt.png')
+    background-size contain
+    background-repeat no-repeat
+    position relative
+    z-index 2
+    width 100%
+    height 100%
+
+  svg.drip-animation
+    width 100%
+    height 100%
     position absolute
-    top calc(50% - 100px)
-    left calc(50% - 100px)
-
-    .img
-      background url('./fluffywaffles-notext-lt.png')
-      background-size contain
-      background-repeat no-repeat
-      position absolute
-      z-index 2
-      width 100%
-      height 100%
-
-    svg
-      width 100%
-      height 100%
-      position absolute
-      z-index 1
-      left 20px
-      top 75%
+    z-index 1
+    left 20px
+    top 75%
