@@ -1,16 +1,144 @@
+// Font & layout variables (only works w/ mononoki)
+// HACK(jordan): this ratio is bullshitted by trial-and-error
+font-size = 16px
+character-height-width-ratio = (11.25/20)
+content-offset-characters = 13
+
+h1-font-size = font-size * 1.66
+h2-font-size = font-size * 1.33
+
+h1-character-width = character-height-width-ratio * h1-font-size
+body-character-width = character-height-width-ratio * font-size
+content-max-width = body-character-width * 45
+body-text-color = #abb2bf
+
+h1
+  font-size h1-font-size
+h2
+  font-size h2-font-size
+h3
+  font-size font-size
+
+a
+  color lighten(body-text-color, 10%)
+
+// Logo variables
+logo-width = 200px
+logo-height = 150px
+// HACK(jordan): these offsets are hard-coded
+logo-drip-offset-x = 20px
+logo-drip-offset-y = 40px
+logo-height-with-drips = logo-height * 2 - logo-drip-offset-y
+
+*
+  box-sizing border-box
+
 html, body
-  margin 0 auto
+  margin 0
   min-height 100%
+  background #282c34
+  font-family monospace
+  color body-text-color
+  font-size font-size
+
+main
+  width 100%
+  p, li
+    max-width content-max-width
 
 header
   padding-top 50px
-  display flex
   justify-content center
   flex-wrap wrap
+  background lighten(#282c34, 10%)
+  // background rgb(250, 250, 100)
 
+  section.fluffywaffles-logo
+    left calc(50% - 100px)
   h1
-    text-align center
+    padding 5px 0
+    padding-left "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+    font-size h1-font-size
+    margin 0
     flex 1 0 100%
+    background #2c323c
+    position relative
+    &::before
+      content ''
+      overflow hidden
+      position absolute
+      font-size @font-size
+      top 0
+      left 0
+      width "calc(50% - (%s * (%s + 1.5)))" % (h1-character-width content-offset-characters)
+      height 100%
+      background #50545a
+    &::after
+      content ''
+      position absolute
+      top 0
+      left "calc(50% + (%s * (13 - (%s - 1.5))))" % (h1-character-width content-offset-characters)
+      width h1-character-width - 1px
+      height 100%
+      display block
+      background white
+      animation blink 0.5s infinite alternate
+
+li-bullet-space = 10px
+li-spacing = 20px
+li-line-height = 14px + li-spacing
+
+section#intro, nav, section#outro
+  margin-left "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+
+nav
+  padding 10px
+  background lighten(#282c34, 10%)
+  width content-max-width
+  a
+    text-decoration none
+    color inherit
+
+ul.collapsible-tree
+  ul
+    overflow hidden
+    height 0
+  li
+    color body-text-color
+    cursor pointer
+    &::before
+      content '+'
+    &.open::before
+      content '-'
+    &:hover
+      color #fff
+
+  & > li.open
+    & > ul > li::before
+      content '-'
+    &.collapse-1 > ul
+      height (li-line-height) * 1
+    &.collapse-2 > ul
+      height (li-line-height) * 2
+    &.collapse-3 > ul
+      height (li-line-height) * 3
+
+
+ul
+  padding 0
+  list-style-type none
+  li
+    margin 0
+    padding 0
+    line-height li-line-height
+    padding-left li-bullet-space
+    &::before
+      content ''
+      position relative
+      left -1 * li-bullet-space
+    & > ul
+      margin-left 0
+      padding-left 25px
 
 waffle_yellow=#ffff00
 waffle_dip=#ffe600
@@ -18,22 +146,33 @@ waffle_edge=#ffd200
 waffle_font=#ffbe00
 
 section.fluffywaffles-logo
-  width 200px
-  height calc(150px + 150px - 40px)
+  width logo-width
+  height logo-height-with-drips
   position relative
 
   object.logo
-    background url('./fluffywaffles-notext-lt.png')
+    background url('./images/fluffywaffles-notext-lt.png')
     background-size contain
     background-repeat no-repeat
     position relative
     z-index 2
-    height 150px
+    height logo-height
 
   svg.drip-animation
     width 100%
-    height 150px // HACK(jordan): this is hard-coded
+    height logo-height
     position absolute
     z-index 1
-    left 20px
-    top 110px
+    left logo-drip-offset-x
+    top logo-height - logo-drip-offset-y
+
+@keyframes blink
+  0%
+    opacity 1.0
+  40%
+    opacity 1.0
+  60%
+    opacity 0.0
+  100%
+    opacity 0.0
+
