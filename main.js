@@ -16,6 +16,20 @@ function kill (state_evt, listeners) {
   listeners[state_evt].length = 0
 }
 
+// Collapsible tree effect.
+const trees = document.querySelectorAll(`ul.collapsible-tree`)
+trees.forEach(tree => {
+  console.log('Collapsible Tree: setting up', tree)
+  const items = tree.querySelectorAll('li')
+  const subtrees = [].filter.call(items, item => item.querySelectorAll('ul').length > 0)
+  ;[].forEach.call(subtrees, subtree => {
+    console.log('Collapsible Tree: setting click handler for subtree', subtree)
+    subtree.addEventListener('click', event => {
+      subtree.classList.toggle('open')
+    })
+  })
+})
+
 // Fancy wuffles.
 /* BUG(jordan): One irritating bug persists in this, even through all the tweaking. Sometimes the
  *   timing is off juuuust enough that a drop will not have a chance to compress at the end of its

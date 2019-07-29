@@ -1,12 +1,51 @@
-html
-  head
-    title Fluffywaffles
-    link(href='./main.css', type='text/css', rel='stylesheet')
-  body
+include blog-mixins
+
++page()
+  main
     header
-      h1 fluffywaffles
       section.fluffywaffles-logo
         object.logo
         svg.drip-animation
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js')
-    script(src='./main.js')
+      h1 fluffywaffles
+    section#intro
+      p
+        | Also known offline as Jordan Timmerman. You can find me on
+        | <a href="https://www.github.com/fluffywaffles">github</a>
+        | or <a href="https://discord.gg/5XQGqu3">discord</a>, or you
+        | can <a href="mailto:jordan@fluffywaffles.com">email me</a>.
+      p
+        | Below, you'll find links to some things I've written, some
+        | sounds I've made, and some projects I'm working on.
+    nav
+      ul
+        li navigation
+          ul.collapsible-tree
+            li.collapse-3 words
+              ul
+                li
+                  a(href='/words/code') on code
+                li
+                  a(href='/words/thoughts') thoughts
+                li
+                  a(href='/words/art') "art"
+            li.collapse-2 projects
+              ul
+                li prettybad .[coming soon]
+                li sisyphus ..[coming soon]
+            li.collapse-1 sounds
+              ul
+                li
+                  a(href='/sounds/crooning') crooning
+            // li experiments
+            //   ul
+            //     li "quips"
+    section#outro
+      p
+        | Some years ago, I published things on
+        | <a href="https://medium.com/@Skorlir">Medium</a>. I stopped
+        | doing that. From now on, it will all go here.
+      p
+        | The source code for this website is available on
+        | <a href="https://www.github.com/fluffywaffles/fluffywaffles">github</a>.
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js')
+  script(src='./main.js')
