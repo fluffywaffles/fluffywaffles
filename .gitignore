@@ -1,5 +1,4 @@
 *.html
 *.css
-!build/*.html
-!build/*.css
+dist/
 node_modules
