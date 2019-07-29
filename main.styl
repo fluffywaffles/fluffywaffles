@@ -9,8 +9,32 @@ h2-font-size = font-size * 1.33
 
 h1-character-width = character-height-width-ratio * h1-font-size
 body-character-width = character-height-width-ratio * font-size
-content-max-width = body-character-width * 45
 body-text-color = #abb2bf
+body-background-color = #282c34
+
+content-max-width = body-character-width * 45
+content-left-space = "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+content-overlay-margin = 50px
+
+.fit-content
+  width content-max-width
+
+img.overlay-content
+  overlay-width = content-max-width + (content-overlay-margin * 2)
+  width overlay-width
+  position relative
+  left -1 * content-overlay-margin
+  transition width 0.5s ease, left 0.5s ease, top 0.5s ease
+
+img.sink
+  width content-max-width - 10px
+  border 20px solid lighten(body-background-color, 10%)
+
+dl
+  dd
+    margin-top 10px
+  dd + dt
+    margin-top 20px
 
 h1
   font-size h1-font-size
@@ -30,34 +54,44 @@ logo-drip-offset-x = 20px
 logo-drip-offset-y = 40px
 logo-height-with-drips = logo-height * 2 - logo-drip-offset-y
 
+@font-face
+  font-family "mononoki"
+  src url('/fonts/mononoki-Regular.woff2'), url('/fonts/mononoki-Regular.woff'), url('/fonts/mononoki-Regular.eot'), url('/fonts/mononoki-Regular.ttf')
+
 *
   box-sizing border-box
 
 html, body
   margin 0
   min-height 100%
-  background #282c34
-  font-family monospace
+  background body-background-color
+  font-family mononoki, monospace
   color body-text-color
   font-size font-size
 
+body
+  overflow-y scroll
+
 main
   width 100%
-  p, li
-    max-width content-max-width
+  padding-bottom 200px
+  section#intro, section#outro
+    p, li
+      @extend .fit-content
 
 header
-  padding-top 50px
   justify-content center
   flex-wrap wrap
-  background lighten(#282c34, 10%)
+  background lighten(body-background-color, 10%)
   // background rgb(250, 250, 100)
+  &.pad
+    padding-top 50px
 
   section.fluffywaffles-logo
     left calc(50% - 100px)
   h1
     padding 5px 0
-    padding-left "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+    padding-left content-left-space
     font-size h1-font-size
     margin 0
     flex 1 0 100%
@@ -73,28 +107,42 @@ header
       width "calc(50% - (%s * (%s + 1.5)))" % (h1-character-width content-offset-characters)
       height 100%
       background #50545a
-    &::after
-      content ''
-      position absolute
-      top 0
-      left "calc(50% + (%s * (13 - (%s - 1.5))))" % (h1-character-width content-offset-characters)
-      width h1-character-width - 1px
-      height 100%
-      display block
-      background white
-      animation blink 0.5s infinite alternate
 
 li-bullet-space = 10px
 li-spacing = 20px
 li-line-height = 14px + li-spacing
 
-section#intro, nav, section#outro
-  margin-left "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+section#intro, section#outro
+  @extend .fit-content
+  margin-left content-left-space
+
+nav.inline
+  margin-left content-left-space
+  width content-max-width
+
+.panel
+  padding 50px 20px
+  background lighten(body-background-color, 10%)
 
 nav
+  @extend .panel
   padding 10px
-  background lighten(#282c34, 10%)
-  width content-max-width
+  margin-left 0
+  &.horizontal
+    padding 0
+    ul.collapsible-tree
+      display flex
+      flex-wrap wrap
+      li, a
+        flex 1 0 300px
+        position relative
+        ul
+          position absolute
+          z-index 1
+          background lighten(body-background-color, 10%)
+          padding-right 20px
+        &.open ul
+          box-shadow 1px 1px body-text-color
   a
     text-decoration none
     color inherit
@@ -113,8 +161,8 @@ ul.collapsible-tree
     &:hover
       color #fff
 
-  & > li.open
-    & > ul > li::before
+  & > li.open, & > a > li.open
+    & > ul > li::before, & > ul > a > li::before
       content '-'
     &.collapse-1 > ul
       height (li-line-height) * 1
@@ -125,6 +173,7 @@ ul.collapsible-tree
 
 
 ul
+  margin 0
   padding 0
   list-style-type none
   li
@@ -165,6 +214,17 @@ section.fluffywaffles-logo
     z-index 1
     left logo-drip-offset-x
     top logo-height - logo-drip-offset-y
+
+header > h1.blinking-cursor::after
+  content ''
+  position absolute
+  top 0
+  left "calc(50% + (%s * (13 - (%s - 1.5))))" % (h1-character-width content-offset-characters)
+  width h1-character-width - 1px
+  height 100%
+  display block
+  background white
+  animation blink 0.8s infinite alternate
 
 @keyframes blink
   0%

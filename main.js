@@ -24,8 +24,20 @@ trees.forEach(tree => {
   const subtrees = [].filter.call(items, item => item.querySelectorAll('ul').length > 0)
   ;[].forEach.call(subtrees, subtree => {
     console.log('Collapsible Tree: setting click handler for subtree', subtree)
+    function close (event) {
+      subtree.classList.remove('open')
+      document.body.removeEventListener('click', close)
+    }
     subtree.addEventListener('click', event => {
-      subtree.classList.toggle('open')
+      event.stopPropagation()
+      if (event.target === subtree) {
+        subtree.classList.toggle('open')
+      }
+      if (subtree.classList.contains('open')) {
+        document.body.addEventListener('click', close)
+      } else {
+        document.body.removeEventListener('click', close)
+      }
     })
   })
 })
