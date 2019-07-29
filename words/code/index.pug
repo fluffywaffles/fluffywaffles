@@ -1,0 +1,37 @@
+include /blog-mixins
+
++page('code')
+  main
+    header
+      nav.horizontal
+        ul
+          li
+            ul.collapsible-tree
+              a(href='/')
+                li index
+              li.collapse-3 words
+                ul
+                  a(href='/words/code')
+                    li on code [coming soon]
+                  a(href='/words/thoughts')
+                    li thoughts [coming soon]
+                  a(href='/words/art')
+                    li "art" [coming soon]
+              li.collapse-2 projects
+                ul
+                  a(href='#')
+                    li prettybad [coming soon]
+                  a(href='#')
+                    li sisyphus [coming soon]
+              li.collapse-1 sounds
+                ul
+                  a(href='/sounds/crooning')
+                    li crooning
+              // li experiments
+              //   ul
+              //     li "quips"
+      h1 Words about Computers
+    section#intro
+      p
+        | Here we are.
+  script(src='/main.js')

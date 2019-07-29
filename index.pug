@@ -2,11 +2,11 @@ include blog-mixins
 
 +page()
   main
-    header
+    header.pad
       section.fluffywaffles-logo
         object.logo
         svg.drip-animation
-      h1 fluffywaffles
+      h1.blinking-cursor fluffywaffles
     section#intro
       p
         | Also known offline as Jordan Timmerman. You can find me on
@@ -16,22 +16,22 @@ include blog-mixins
       p
         | Below, you'll find links to some things I've written, some
         | sounds I've made, and some projects I'm working on.
-    nav
+    nav.inline
       ul
         li navigation
           ul.collapsible-tree
             li.collapse-3 words
               ul
                 li
-                  a(href='/words/code') on code
+                  a(href='/words/code') on code [coming soon]
                 li
-                  a(href='/words/thoughts') thoughts
+                  a(href='/words/thoughts') thoughts [coming soon]
                 li
-                  a(href='/words/art') "art"
+                  a(href='/words/art') "art" [coming soon]
             li.collapse-2 projects
               ul
-                li prettybad .[coming soon]
-                li sisyphus ..[coming soon]
+                li prettybad [coming soon]
+                li sisyphus [coming soon]
             li.collapse-1 sounds
               ul
                 li
