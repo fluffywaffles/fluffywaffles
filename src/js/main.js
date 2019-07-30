@@ -24,6 +24,12 @@ trees.forEach(tree => {
   const subtrees = [].filter.call(items, item => item.querySelectorAll('ul').length > 0)
   ;[].forEach.call(subtrees, subtree => {
     console.log('Collapsible Tree: setting click handler for subtree', subtree)
+    console.log(subtree.parentElement)
+    // if (subtree.parentElement.tagName === `A`) {
+    //   console.log('Collapsible Tree: subtree has anchor wrapper; selecting it')
+    //   subtree = subtree.parentElement
+    //   console.log('Collapsible Tree: new subtree is anchor parent', subtree)
+    // }
     function close (event) {
       subtree.classList.remove('open')
       document.body.removeEventListener('click', close)

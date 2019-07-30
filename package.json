@@ -3,31 +3,33 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "clean": "rm -rf dist/ tmp/",
-    "pug": "pug -b $(git rev-parse --show-toplevel) $npm_package_pug_source",
+    "clean": "rm -rf $npm_package_build_directory $npm_package_develop_directory",
+    "build:setup": "mkdir $npm_package_build_directory",
+    "develop:setup": "mkdir $npm_package_develop_directory",
+    "pug": "pug -b $npm_package_pug_source $npm_package_pug_source",
     "stylus": "stylus $npm_package_stylus_source",
     "js": "cp -r $npm_package_js_source",
     "build:assets": "cp -r $npm_package_assets_source $npm_package_build_directory",
     "build:js": "npm run js -- $npm_package_build_directory",
     "build:pug": "npm run pug -- -o $npm_package_build_directory",
     "build:stylus": "npm run stylus -- -o $npm_package_build_directory",
-    "build": "npm run clean && npm run build:pug & npm run build:stylus & npm run build:assets & wait $(jobs -p)",
+    "build": "npm run clean && npm run build:setup && npm run build:pug & npm run build:stylus & npm run build:assets & wait $(jobs -p)",
     "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
     "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
-    "develop:js": "ln -s $npm_package_develop_directory/main.js main.js",
+    "develop:js": "ln -s $npm_package_js_source $npm_package_develop_directory/js &",
     "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory &",
     "develop:serve": "browser-sync start --config bs-config.js",
-    "develop": "npm run clean && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
+    "develop": "npm run clean && npm run develop:setup && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
     "start": "npm run develop"
   },
   "js": {
-    "source": "main.js"
+    "source": "src/js"
   },
   "pug": {
-    "source": "*.pug words projects sounds "
+    "source": "src/pug"
   },
   "stylus": {
-    "source": "main.styl"
+    "source": "src/stylus"
   },
   "assets": {
     "source": "audio fonts images"
