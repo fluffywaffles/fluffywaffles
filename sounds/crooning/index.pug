@@ -2,75 +2,49 @@ include /blog-mixins
 
 +page('crooning')
   main
-    nav.horizontal
-      ul
-        li
-          ul.collapsible-tree
-            a(href='/')
-              li index
-            li.collapse-3 words
-              ul
-                a(href='/words/code')
-                  li on code [coming soon]
-                a(href='/words/thoughts')
-                  li thoughts [coming soon]
-                a(href='/words/art')
-                  li "art" [coming soon]
-            li.collapse-2 projects
-              ul
-                a(href='#')
-                  li prettybad [coming soon]
-                a(href='#')
-                  li sisyphus [coming soon]
-            li.collapse-1 sounds
-              ul
-                a(href='/sounds/crooning')
-                  li crooning
-            // li experiments
-            //   ul
-            //     li "quips"
+    +nav()(index, horizontal)
     header
       h1 Crooning
     section#intro
-      p
-        | Rainbow Kitten Surprise is a strange, folksy band. Their music
-        | tends to be very vocal; their lead singer has been described as a
-        | "soulful crooner."
+      p.
+        Rainbow Kitten Surprise is a strange, folksy band. Their music
+        tends to be very vocal; their lead singer has been described as a
+        "soulful crooner."
       a(href="https://www.rksband.com/", target="_blank")
         img.sink(
           src='/images/rainbow-kitten-surprise.jpeg',
         )
-      p
-        | I used to drive 5 hours each way between my work, in Chicago, and
-        | my extended family in Indiana. I'd make the trip on weekends; I'd
-        | make the trip for holidays; I'd make it when I was bored.
-      p
-        | Shortly after discovering Rainbow Kitten Surprise, my long drives
-        | became sing-alongs. My dog, my sole captive audience member,
-        | seemed not to mind them, so I began to think: "maybe I'm singing
-        | these... pretty well."
-      p
-        | I practice these songs impulsively when I'm at home. I would say I
-        | sing while I'm working, but really - the singing takes over. I
-        | lose track of time in the shower. I hold the same dirty dish
-        | over the sink while the water runs. I have to rewind a Netflix
-        | episode, because partway through I broke into song.
-      p
-        | Usually, I fixate on a particular song. Soon, I am not singing
-        | anything else. Eventually, I'll start to think: "I'm getting
-        | pretty good at this one." I'll start to record it. Over time,
-        | I'll diverge from the original song. I'll develop my own
-        | rendition. After 20-30 recorded trials (and many unrecorded),
-        | I'll realize I've spent hours singing into my phone microphone.
-        | "It would be a shame," I think, "if nobody ever hears it."
-      p
-        | Some of those renditions, I've posted here. Rest assured they've
-        | already been stamped with the approval of friends and family, so,
-        | at the very least, they probably won't <em>hurt</em> your ears.
-      p
-        | I nearly always change the tempo and the lyrics. The song
-        | naturally mutates. Don't be surprised if the original sounds
-        | different; it should still be recognizable.
+      p.
+        I used to drive 5 hours each way between my work, in Chicago, and
+        my extended family in Indiana. I'd make the trip on weekends; I'd
+        make the trip for holidays; I'd make it when I was bored.
+      p.
+        Shortly after discovering Rainbow Kitten Surprise, my long drives
+        became sing-alongs. My dog, my sole captive audience member,
+        seemed not to mind them, so I began to think: "maybe I'm singing
+        these... pretty well."
+      p.
+        I practice these songs impulsively when I'm at home. I would say I
+        sing while I'm working, but really - the singing takes over. I
+        lose track of time in the shower. I hold the same dirty dish
+        over the sink while the water runs. I have to rewind a Netflix
+        episode, because partway through I broke into song.
+      p.
+        Usually, I fixate on a particular song. Soon, I am not singing
+        anything else. Eventually, I'll start to think: "I'm getting
+        pretty good at this one." I'll start to record it. Over time,
+        I'll diverge from the original song. I'll develop my own
+        rendition. After 20-30 recorded trials (and many unrecorded),
+        I'll realize I've spent hours singing into my phone microphone.
+        "It would be a shame," I think, "if nobody ever hears it."
+      p.
+        Some of those renditions, I've posted here. Rest assured they've
+        already been stamped with the approval of friends and family, so,
+        at the very least, they probably won't <em>hurt</em> your ears.
+      p.
+        I nearly always change the tempo and the lyrics. The song
+        naturally mutates. Don't be surprised if the original sounds
+        different; it should still be recognizable.
       dl.panel
         dt
           a(href='https://www.youtube.com/watch?v=fL46O261Z5U') Cold Love
