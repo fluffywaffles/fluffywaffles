@@ -14,7 +14,7 @@
     "build": "npm run clean && npm run build:pug & npm run build:stylus & npm run build:assets & wait $(jobs -p)",
     "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
     "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
-    "develop:js": "npm run js -- $npm_package_develop_directory",
+    "develop:js": "ln -s $npm_package_develop_directory/main.js main.js",
     "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory &",
     "develop:serve": "browser-sync start --config bs-config.js",
     "develop": "npm run clean && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
