@@ -20,6 +20,7 @@
     "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory &",
     "develop:serve": "browser-sync start --config bs-config.js",
     "develop": "npm run clean && npm run develop:setup && npm run develop:assets && npm run develop:js && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
+    "deploy": "npm run build && rsync -v -e 'ssh' --progress --recursive dist/* deploy@fw:~/site",
     "start": "npm run develop"
   },
   "js": {
