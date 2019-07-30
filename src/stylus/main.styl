@@ -160,7 +160,7 @@ ul.collapsible-tree
     overflow hidden
     height 0
     transition height ease 350ms
-  li, a > li
+  li
     color body-text-color
     cursor pointer
     &::before
@@ -175,7 +175,7 @@ ul.collapsible-tree
     &.collapse-0::before
       content '<'
 
-  & > li.open, & > a > li.open
+  & > li.open
     & > ul > li::before, & > ul > a > li::before
       content '-'
     &.collapse-1 > ul
