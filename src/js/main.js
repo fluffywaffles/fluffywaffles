@@ -16,6 +16,15 @@ function kill (state_evt, listeners) {
   listeners[state_evt].length = 0
 }
 
+// "Button" links. Using an <a> to make things clickable.
+const button_links = document.querySelectorAll('a[data-button-link]')
+button_links.forEach(button_link => {
+  button_link.addEventListener('click', event => {
+    event.preventDefault()
+    event.target.parentElement.click()
+  })
+})
+
 // Collapsible tree effect.
 const trees = document.querySelectorAll(`ul.collapsible-tree`)
 trees.forEach(tree => {
