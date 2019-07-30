@@ -1,0 +1,41 @@
+mixin page(title)
+  html
+    head
+      title=title
+      link(href='/main.css', type='text/css', rel='stylesheet')
+      meta(name='viewport', content='width=device-width,initial-scale=1')
+    body
+      block
+
+mixin nav()
+  nav&attributes(attributes)
+    ul
+        li
+          ul.collapsible-tree(horizontal=attributes.horizontal)
+            if attributes.index
+              a(href='/')
+                li.collapse-0 index
+            a(href='#nav-words')
+              li.collapse-3 words
+                ul.z-3
+                  a(href='/words/code')
+                    li on code [coming soon]
+                  a(href='/words/thoughts')
+                    li thoughts [coming soon]
+                  a(href='/words/art')
+                    li "art" [coming soon]
+            a(href='#nav-projects')
+              li.collapse-2 projects
+                ul.z-2
+                  a(href='#')
+                    li prettybad [coming soon]
+                  a(href='#')
+                    li sisyphus [coming soon]
+            a(href='#nav-sounds')
+              li.collapse-1 sounds
+                ul.z-1
+                  a(href='/sounds/crooning')
+                    li crooning
+            // li experiments
+            //   ul
+            //     li "quips"
