@@ -13,7 +13,7 @@
     "build:pug": "npm run pug -- -o $npm_package_build_directory",
     "build:js": "npm run js -- $npm_package_build_directory",
     "build:stylus": "npm run stylus -- -o $npm_package_build_directory",
-    "build": "npm run clean && npm run build:setup && npm run build:js && npm run build:pug & npm run build:stylus & npm run build:assets & wait $(jobs -p)",
+    "build": "npm run clean && npm run build:setup && npm run build:assets && npm run build:js && npm run build:pug & npm run build:stylus & wait $(jobs -p)",
     "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
     "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
     "develop:js": "ln -s $(git rev-parse --show-toplevel)/$npm_package_js_source $npm_package_develop_directory/js &",
