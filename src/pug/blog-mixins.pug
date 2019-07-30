@@ -10,32 +10,32 @@ mixin page(title)
 mixin nav()
   nav&attributes(attributes)
     ul
-        li
-          ul.collapsible-tree(horizontal=attributes.horizontal)
-            if attributes.index
-              li.collapse-0
-                a(href='/') index
-            li.collapse-3
-              a(data-button-link) words
-                ul.z-3
-                  li
-                    a(href='/words/code') on code [coming soon]
-                  li
-                    a(href='/words/thoughts') thoughts [coming soon]
-                  li
-                    a(href='/words/art') "art" [coming soon]
-            li.collapse-2
-              a(data-button-link) projects
-                ul.z-2
-                  li
-                    a(href='#') prettybad [coming soon]
-                  li
-                    a(href='#') sisyphus [coming soon]
-            li.collapse-1
-              a(data-button-link) sounds
-                ul.z-1
-                  li
-                    a(href='/sounds/crooning') crooning
-            // li experiments
-            //   ul
-            //     li "quips"
+      li
+        ul.collapsible-tree(horizontal=attributes.horizontal)
+          if attributes.index
+            li.collapse-0
+              a(href='/') index
+          li.collapse-3
+            a(data-button-link) words
+              ul.z-3
+                li
+                  a(href='/words/code') on code [coming soon]
+                li
+                  a(href='/words/thoughts') thoughts [coming soon]
+                li
+                  a(href='/words/art') "art" [coming soon]
+          li.collapse-2
+            a(data-button-link) projects
+              ul.z-2
+                li
+                  a(href='#') prettybad [coming soon]
+                li
+                  a(href='#') sisyphus [coming soon]
+          li.collapse-1
+            a(data-button-link) sounds
+              ul.z-1
+                li
+                  a(href='/sounds/crooning') crooning
+          // li experiments
+          //   ul
+          //     li "quips"
