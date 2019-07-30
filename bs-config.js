@@ -19,13 +19,13 @@ module.exports = {
             "port": 8080
         }
     },
-    "files": ["*.css", "*.js", "**/*.html"],
+    "files": [ "dist/**/*.{css,js,html}", "tmp/**/*.{css,js,html}" ],
     "watchOptions": {},
     "server": true,
     "proxy": false,
     "port": 3000,
     "middleware": false,
-    "serveStatic": [],
+    "serveStatic": [ "dist/", "tmp/" ],
     "ghostMode": {
         "clicks": true,
         "scroll": true,

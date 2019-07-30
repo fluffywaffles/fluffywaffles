@@ -3,18 +3,25 @@
   "version": "0.0.0",
   "description": "",
   "scripts": {
-    "clean": "rm -f index.html main.css",
+    "clean": "rm -rf dist/ tmp/",
     "pug": "pug -b $(git rev-parse --show-toplevel) $npm_package_pug_source",
     "stylus": "stylus $npm_package_stylus_source",
+    "js": "cp -r $npm_package_js_source",
     "build:assets": "cp -r $npm_package_assets_source $npm_package_build_directory",
+    "build:js": "npm run js -- $npm_package_build_directory",
     "build:pug": "npm run pug -- -o $npm_package_build_directory",
     "build:stylus": "npm run stylus -- -o $npm_package_build_directory",
     "build": "npm run clean && npm run build:pug & npm run build:stylus & npm run build:assets & wait $(jobs -p)",
-    "develop:pug": "npm run pug -- -w &",
-    "develop:stylus": "npm run stylus -- -w &",
+    "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
+    "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
+    "develop:js": "npm run js -- $npm_package_develop_directory",
+    "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory &",
     "develop:serve": "browser-sync start --config bs-config.js",
-    "develop": "npm run develop:pug && npm run develop:stylus && npm run develop:serve",
+    "develop": "npm run clean && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
     "start": "npm run develop"
+  },
+  "js": {
+    "source": "main.js"
   },
   "pug": {
     "source": "*.pug words projects sounds "
@@ -24,6 +31,9 @@
   },
   "assets": {
     "source": "audio fonts images"
+  },
+  "develop": {
+    "directory": "tmp/"
   },
   "build": {
     "directory": "dist/"
