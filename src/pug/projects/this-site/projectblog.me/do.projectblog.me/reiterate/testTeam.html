@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+	<style type="text/css">
+
+		html, body 	{	margin: 0;
+						width: 100%;
+						height: 100%;	}
+
+		h1 		{	font-family: arial, helvetica, sans-serif;
+					text-align: center;	}
+
+		.main	{	width: 100%;
+					position: relative;
+					padding: 1% 0 1% 0;
+					background: url('./images/brushed.png') repeat 0% 0%;	}
+
+		.cf:after {	content: ""; clear:both; visibility: hidden; display: table;	}
+
+		.box 	{	background: gray;
+					float: left;
+					width: 150px;
+					height: 150px;
+					position: relative;
+					cursor: pointer;	}
+
+		.box img {	width: 100%;
+					height: 100%;	}
+
+		.box-container 	{	width: 54%;
+							padding: 0 5% 0 5%;
+							float: left;	}
+
+		.spotlight 		{	width: 25%;
+							float: left;
+							margin: 0 2% 0 2%;
+							background: -webkit-radial-gradient(center center, circle contain, rgb(250,250,250) 0%, rgb(253,253,253) 100%);
+							border-top-left-radius: 10px;
+							border-top-right-radius: 10px;
+							box-shadow: 0px 0px 1px 2px rgba(0,0,0,0.1);	}
+
+		.spotlight>.text 	{	margin: 0 2% 0 2%;
+								font-family: arial, helvetica, sans-serif;	}
+
+		.spotlight>img 	{	width: 90%;
+							margin-left: 5%;
+							margin-top: 15px;
+							border-top-left-radius: 10px;
+							border-top-right-radius: 10px;
+							box-shadow: 0px 1px 1px gray, 0px 8px 10px -5px rgba(0,0,0,0.3);	}
+
+		@media all and (max-width: 1600px) {
+			.box 	{ 	width: 120px;
+						height: 120px;	}
+			.box-container 	{	width: 45%;	}
+			.spotlight 		{	width: 28%;	}
+		}
+
+		@media all and (max-width: 1200px) {
+			.box 	{	width: 90px;
+						height: 90px;	}
+			.box-container 	{	width: 40%;	}
+			.spotlight 		{	width: 30%;	}
+		}
+
+		@media all and (max-width: 800px) {
+			.box-container 	{	width: 90%;	}
+			.box 			{	width: 150px; height: 150px;	}
+			.spotlight 		{	display: none;	}
+		}
+
+	</style>
+	
+	<body>
+
+		<div class="main cf">
+
+			<h1> The Epic Team </h1>
+
+			<div class="box-container">
+			</div>
+			<!-- 30 boxes
+				investigate behavior and float -->
+
+			<div class="spotlight">
+				<img src="./images/members/MatsGabrielLoveJohansen-lg.jpg" alt="Mats">
+				<div class="text">
+				</div>
+			</div>
+
+		</div>
+
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		
+		<script type="text/javascript">
+
+		var boxes;
+		var boxContainer = $('.box-container')[0];
+		var spotlight = $(document.getElementsByClassName('spotlight')[0]);
+
+		$.getJSON('./members.json', function(json, textStatus) {
+			var img;
+			var box;
+			$.each(json.members, function(i, m) {
+					img = document.createElement('img');
+					img.src = './images/members/headshots/'+String(m['name']).replace(/ /g,'')+'.jpg';
+					box = $(document.createElement('div')).addClass('box')[0];
+					box.dataset.name = m.name;
+					box.dataset.aboutyear = m.about.year;
+					box.dataset.aboutpassion = m.about.passion;
+					box.dataset.aboutblurb = m.about.blurb;
+					box.appendChild( img );
+					boxContainer.appendChild(box);
+				});
+
+			boxes = $('.box');
+
+			boxes.click(function(event) {
+				var bx = $(this);
+				spotlight.find('img')[0].src = bx.find('img')[0].src.replace('headshots/','').split('.')[0]+'-lg.jpg';
+				spotlight.find('img')[0].alt = this.dataset.name.split(' ')[0];
+				spotlight.find('div.text').html('<p>'+this.dataset.name+'<dl><dt> Year <dd>'+this.dataset.aboutyear + '<dt> Passion <dd>' + this.dataset.aboutpassion + '<dt> About Me <dd>' + this.dataset.aboutblurb + "</dl>");
+				bx.find('img').wrap('<div style="color: rgba(0,0,0,0.4); width: 100%; height: 100%"></div>')
+
+			});
+
+			spotlight.find('div.text').html('<p>'+boxes[4].dataset.name+'<dl><dt> Year <dd>'+boxes[4].dataset.aboutyear + '<dt> Passion <dd>' + boxes[4].dataset.aboutpassion + '<dt> About Me <dd>' + boxes[4].dataset.aboutblurb + "</dl>");
+		});
+
+		</script>
+
+	</body>
+
+</html>

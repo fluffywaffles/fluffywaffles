@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<!-- Oxygen:300|ABeeZee:400|Abel:400| -->
+	<link href="//fonts.googleapis.com/css?family=Advent+Pro:400|Open+Sans:400,300italic,300,400italic,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
+	<title>Epic</title>
+	<link href="base.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+	<header class="parallax-scroll-img x-alterable" data-parallax-speed="1">
+		<span class="quiet-dark">
+			<p>We   </p>
+			<p>Are  </p>
+			<p>Epic (jk) </p>
+			<!--<img src="">
+			<img src="">
+			<img src="">-->
+		</span>
+	</header>
+
+
+	<nav>
+		<div id="site-select">
+			<div class="centered">
+				<img src="images/NUVC-Icon-Small.png" class="sitenav">
+				<img src="images/-Icon-Small.png" class="sitenav" id="current-site">
+				<img src="images/PP-Icon-Small.png" class="sitenav">
+			</div>
+			<div id="nav-indicator"></div>
+		</div>
+		<div id="sub-select">
+			<p><a href="#home" class="current-subnav">Home</a></p>
+			<p><a href="">About</a></p>
+			<p><a href="">Blog</a></p>
+			<p><a href="">Video</a></p>
+			<p><a href="">Events</a></p>
+			<p><a href="">Resources</a></p>
+		</div>
+	</nav>
+
+	<div id="main-content">
+		<section id="home">
+			<div id="home-image" class="parallax-scroll-img" data-parallax-speed="0.5"></div>
+			<div class="content">
+				<p>We have a mission.
+				<p>We'll talk about it later.
+				<p>Harken-heed-and-heel the coming.
+			</div>
+		</section>
+
+		<section id="trash-data">
+			<div id="trash-img" class="parallax-scroll-img" data-parallax-speed="0.5" data-parallax-buffer="5"></div>
+			<div id="trash-content" class="content">
+				<p>Wait for it
+				<p>...
+				<p>Wait for it 
+				<p>...
+				<p>Wait for it
+				<p>...
+				<p>This is the Bro section
+			</div>
+		</section>
+
+		<section id="team">
+			<div id="team-img" class="parallax-scroll-img" data-parallax-speed="0.5"></div>
+		</section>
+	</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+
+		var parallaxOffset;
+		var subnav = document.getElementById('sub-select'), supernav = document.getElementById('site-select');
+
+		function calcOffsetFrom(sel){
+			return {top: $(sel).position().top+$(sel).height(), left: 0};
+		}
+
+		function atElement(el, f, atbottom, reverse){
+			var t = atbottom === undefined ? 0 : $(el).height();
+			var reverse = reverse === undefined ? false : true;
+			var s = window.scrollY, off = $(el).offset().top+t;
+			((reverse && s <= off) || (!reverse && s >= off)) ? f() : null;
+		}
+
+		$('#main-content').offset(calcOffsetFrom('nav'));
+
+		$(window).resize(function(e){
+			$('#main-content').offset(calcOffsetFrom('nav'));
+		});
+
+		$(window).scroll(function(e) {
+			atElement(subnav, function() {
+				$(subnav).css({position:'fixed', top:'0', left:'0'});
+			});
+
+			atElement(supernav, function(){
+				$(subnav).attr('style',''); //subnav.style = ''
+			}, 'call at bottom', 'in reverse');
+
+			$.each($('.parallax-scroll-img'), function(idx,el){
+				parallaxOffset = $(el).data('parallax-speed')*((window.scrollY - $(el).position().top)/($(el).height()))*50;
+
+				parallaxOffset = parallaxOffset < 0 ? 0 : parallaxOffset > 80 ? 80 : parallaxOffset;
+
+				$(el).css('background-position', '50% '+ (90 - parallaxOffset) +'%');
+			});
+		});
+
+		$('a').click(function(event) {
+			event.stopPropagation();
+		});
+
+		$('.sitenav').click(function(event) {
+			var a = this.src.split('/'), to = a[a.length-1].split('-')[0].toLowerCase();
+			
+			xsite(to);
+		});
+
+		function xsite(to) {
+			var lz = $('#main-content');
+			var dz = lz.clone();
+			dz[0].style.marginLeft = '100%';
+			document.body.appendChild(dz[0]);
+			dz.load(window.location.href.split('#!')[0]+to, null, function() {
+				lz.animate({
+					left: '-100%'},
+					'slow');
+				$(dz).animate({left: '0%'}, 'fast');
+			});
+		}
+
+		$('.sitenav').click(function(event) {
+			var t = $('#current-site').attr('src').split('/');
+			t = t[t.length-1].split('-')[0].toLowerCase();
+			window.history.pushState({"revert":t},null,window.location.href.split('#!')[0]+"#!"+t);
+
+			var to = this.src.split('/')[this.src.split('/').length-1].split('-')[0].toLowerCase();
+			
+			xsite(to);
+		});
+
+		var t = $('#current-site').attr('src').split('/');
+		t = t[t.length-1].split('-')[0].toLowerCase();
+		
+		window.history.replaceState({revert:t}, null,
+			window.location.href.split('#!')[0]+
+							((t==undefined || t=='') ? '' : '#!'+t));
+
+		window.onpopstate = function(event) {
+			if (event.state && event.state['revert'] != undefined) {		
+				xsite(event.state['revert']);	
+			}
+			else {	event.default;	}
+		}
+	});
+
+</script>
+
+</body>
+</html>

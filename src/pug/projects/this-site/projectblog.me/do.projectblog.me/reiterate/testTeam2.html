@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Team 2</title>
+
+<style type="text/css">
+
+@import url(http://fonts.googleapis.com/css?family=Cantarell);
+
+html, body 	{	margin: 0;
+				width: 100%;
+				height: 100%;	}
+
+section 	{	/*setup defaults*/
+				margin: 0;
+				padding: 0;
+				display: block;	}
+
+#main-team 	{	width: 100%; height: 100%;
+				position: relative;	}
+
+.sidebar 	{	float: left;
+				height: 100%;
+				width: 10%;
+				overflow-y: auto;	}
+
+.sidebar::-webkit-scrollbar {
+					display: none;
+					}
+
+.dark 		{	background-color: rgba(0,0,0,0.7);
+				box-shadow: inset 0px 0px 13px black;	}
+
+.fx-all		{	transition: all ease 1s;
+				-webkit-transition: all ease 1s;
+				-moz-transition: all ease 1s;
+				-ms-transition: all ease 1s;
+				-o-transition: all ease 1s;	}
+
+.sidebar-deck 	{	float: right;
+					width: 90%;
+					height: 100%;	}
+
+.sidebar-deck .mutable-data-text {	padding-top: 15%;
+									padding-left: 33%;	}
+
+.sidebar-deck .mutable-data-text.T34stext {	padding-top: 23.2%;
+											padding-left: 37%;	}
+
+.T34stext>span 		{	display: block;
+						padding-top: 50px;
+						padding-left: 20px;	}
+
+
+.sidebar-deck .mutable-data-text.T34sBgtext {	padding-top: 15%;
+												padding-left: 30%;	}
+
+.T34sBgtext>span 		{	display: block;
+							padding-top: 50px;
+							padding-left: 20px;	}
+
+.fullerback 	{	/*	empty styles	*/
+					background-image: url('./images/members/MatsGabrielLoveJohansen.png');
+					background-size: contain;
+					background-repeat: no-repeat;
+					background-position: 0% 0%;	}
+
+.team-desc 		{	font-family: Cantarell, helvetica, arial, sans-serif;
+					font-size: 1.1em;	}
+
+.box 	{	width: 150px;
+			height: 150px;
+			margin: 10px auto;
+			position: relative;
+			cursor: pointer;
+			box-shadow: 0px 0px 15px 5px #333;	}
+
+.box img {	width: 150px;
+			height: 150px;	}
+
+</style>
+
+</head>
+<body>
+
+<section id="main-team">
+
+	<section class="sidebar dark fx-all">
+
+		<!-- Fill me up with headshots -->
+
+	</section>
+
+	<section class="sidebar-deck fullerback team-desc">
+
+		<dl class="mutable-data-text">
+			<span><dt>Mats Gabriel Love Johansen
+				<dd> Mats is really an awesome european name.
+			<dt>Design
+				<dd> i'm the head of epic design; i drive it; ignite it. it's whatev.
+			<dt>Class
+				<dd>i'm about out -- class of 2015 (or maybe some other year idk).</span>
+		</dl>
+
+	</section>
+
+	<div style="position: fixed; top: 15px; right: 50px;"><button>Switch picture type! (yeah, click me.)</button> Current type: <span></span><br><span style="font-family:'Cantarell'">Just so you know: this is done by channeling a combination of Imogen Heap, Becky G, and choses electronique.</span></div>
+
+</section>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+var headbar = $('#main-team>.sidebar'), teamdeck = headbar.next();
+
+var bgopts = ['', 'T34s', 'T34sBg', '34s', 'Halved', 'Pixed', 'Skitched'];
+var opt    = 0;
+
+headbar.scroll(function(event) {
+	
+});
+
+$.getJSON('./members.json', function(json, textStatus) {
+
+	var img, headshot;
+
+	$.each(json.members, function( i, m ) {
+			img = document.createElement('img');
+			img.src = './images/members/headshots/' + String( m[ 'name' ] ).replace( / /g,'' ) + '.jpg';
+			
+			headshot = $(document.createElement('div')).addClass('box');
+			
+			headshot.data('name', m.name);
+			headshot.data('passion', m.about.passion);
+			headshot.data('blurb', m.about.blurb);
+			headshot.data('year', m.about.year);
+
+			headshot[0].appendChild( img );
+			
+			headbar.append(headshot);
+		});
+
+	boxes = $('.box');
+
+	boxes.click(function(event) {
+				var bx = $(this);
+
+				teamdeck.css('background-image', "url('" + bx.find('img')[0].src.replace('headshots/','').split('.jpg')[0]+bgopts[ opt ]+'.png' + "')" );
+				
+				var desc = teamdeck.find('.mutable-data-text>span');
+				
+				desc.html('');
+				
+				var k, p = '';	
+				for ( k in bx.data()) {
+					p += '<dt>' + k + '<dd>' + bx.data( k );
+				}
+
+				desc.html(p);
+
+			});
+	});
+
+	teamdeck.hover(function(e) {
+		/* Stuff to do when the mouse enters the element */
+		e.pageX < 100 ? function(){
+			headbar.slideUp();
+		} : false;
+	}, function() {
+		/* Stuff to do when the mouse leaves the element */
+	});
+
+	$('button').click(function(event) {
+		opt = opt+1 % bgopts.length <= bgopts.length - 1 ? opt+1 : 0;
+		var cn = $('.mutable-data-text')[0].className;
+		$('.mutable-data-text')[0].className = cn.replace(/Halved\w+|Pixed\w+|Skitched\w+|34s\w+|T34s\w+|T34sBg\w+/g,'');
+		$('.mutable-data-text').addClass(bgopts [ opt ]+'text');
+		if (opt == 4) $('.mutable-data-text').css('padding-left','15%');
+		else 	$('.mutable-data-text').css('padding-left','');
+		var prev = teamdeck.css('background-image');
+		teamdeck.css('background-image', 'url("'+prev.split('.png')[0].substring(4).replace(/Halved|Pixed|Skitched|T34sBg|T34s|34s/g,'')+bgopts[ opt ]+'.png")');
+		$(this).next().text(bgopts[ opt ]);
+	});
+
+</script>
+
+</body>
+</html>
