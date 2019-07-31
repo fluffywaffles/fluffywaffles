@@ -170,10 +170,14 @@ ul.collapsible-tree
   &[horizontal]
     display flex
     flex-wrap wrap
-    li, a
-      flex 1 0 50%
+    li
+      white-space nowrap
+      flex 1 0 (body-character-width * 40)
       position relative
+      text-overflow ellipsis
       ul
+        margin-left li-bullet-space
+        max-width "calc(100% - %s)" % (li-bullet-space)
         position absolute
         background highlight-background-color
         padding-right 20px
