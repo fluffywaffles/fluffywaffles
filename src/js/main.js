@@ -19,6 +19,19 @@ function kill (state_evt, listeners) {
 // "Button" links. Using an <a> to make things clickable.
 const button_links = document.querySelectorAll('a[data-button-link]')
 button_links.forEach(button_link => {
+  if (button_link.innerText.length === 0) {
+    console.log(`
+      a[data-button-link]: found one of those naughty stray links that
+      Webkit likes to materialize inside of <ul>s! Deleting it.
+
+      Stupid, stupid Webkit. Go have a beer with somebody who cares about
+      HTML semantics and give it a good cry. I want my code to work.
+
+      Webkit: "The web is broken; it's not my fault!"
+      Somebody who cares: "There, there, Webkit."
+    `)
+    button_link.remove()
+  }
   button_link.addEventListener('click', event => {
     event.preventDefault()
     event.target.parentElement.click()
