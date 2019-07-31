@@ -80,8 +80,16 @@ nav
     max-width content-max-width
     margin-left content-left-space
   a
+    background-color transparent
     text-decoration none
     color inherit
+    &:hover
+      background-color transparent
+    &:active
+      font-style normal
+      text-decoration underline
+    &[data-link-button]:active
+      text-decoration none
 
 ul
   margin 0
@@ -177,12 +185,6 @@ ul.collapsible-tree
       min-width (body-character-width * 33)
       position relative
       text-overflow ellipsis
-      a
-        background-color transparent
-        &:hover
-          background-color transparent
-        &:active
-          font-style normal
       ul
         padding-left li-bullet-space * 2
         margin-left li-bullet-space
