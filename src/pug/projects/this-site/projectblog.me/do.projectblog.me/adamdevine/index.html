@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>A&O Presents: A Night of Stand Up with Adam Devine!</title>
+		<!-- link -->
+		<style type="text/css">
+			@font-face {
+			  font-family: aolt;
+			  src: 	url('/fonts/projectblog.me/ao/ao-light.eot') format('embedded-opentype'),
+         			url('/fonts/projectblog.me/ao/ao-light.otf') format('otf'),
+         			url('/fonts/projectblog.me/ao/ao-light.ttf') format('truetype'),
+       				url('/fonts/projectblog.me/ao/ao-light.svg') format('svg'); }
+
+       		html, body 	  {	margin: 0 0;
+       					padding: 0 0;
+       					background: url('/images/projectblog.me/ao/Dark_Background.jpg');
+       					width: 100%;
+       					height: 100%;
+       					background-size: cover;
+			}
+
+			#main 	  {	width: 65%; margin: 0 auto;
+						max-width: 1400px; }
+
+			h1, h2 	  {	font-family: 'aolt', sans-serif;
+						color: white;
+						text-align: center;
+						margin: 0 0;
+						opacity: 0;
+						transition: all ease 3s;	}
+
+			h1 		  { font-size: 3em;	}
+
+			#logo 	  { display: block;
+						position: relative;
+						padding-top: 20px;
+						margin: 0 auto; }
+
+			hr 		  {	margin-top: 10px;
+						margin-bottom: 20px;
+						opacity: 0;
+						transition: all ease 4s;	}
+
+			#videopanel {
+				width: 90%;
+				margin: 0 auto;
+				position: relative;
+			}
+
+			.supvid   {	position: absolute;
+						z-index: 0;
+						width: 50%;	}
+
+			#tr 	  { position: absolute;
+						left: 49.99%;
+						top: 0px;	}
+			#ll 	  { position: absolute;
+						left: 0px;	}
+			#lr 	  { position: absolute;
+						left: 49.99%;
+						margin-bottom: 50px;	}
+
+			div[class*='warhol-'] 	{	z-index: 2;
+										width: 50%;	}
+
+			.warhol-c {	background: rgba(0, 255, 255, 0.2);
+						position: absolute;
+						top: 0px;	}
+			.warhol-m {	background: rgba(255, 0, 255, 0.2);
+						position: absolute; left: 49.99%;
+						top: 0px; 	}
+			.warhol-y {	background: rgba(255, 255, 0, 0.2);
+						position: absolute; }
+			.warhol-t {	background: rgba(0, 255, 0, 0.15);
+						position: absolute; left: 49.99%;	}
+		</style>
+	</head>
+
+	<div id="main">
+
+		<h1>
+			<img id="logo" src="/images/projectblog.me/ao/whitelogo.png" width="225px"></img>
+		</h1>
+
+		<hr>
+
+		<div id="videopanel">
+
+			<video id="tl" class="supvid" loop>
+				<source class="webm"
+						src="./videos/Sup.webm"
+						type="video/webm">
+				<source class="ogv"
+						src="Sup.ogv"
+						type="video/ogg">
+				<source class="mp4"
+						src="Sup.mp4"
+						type="video/mp4">
+			</video>
+
+			<video id="tr" class="supvid" loop>
+				<source class="webm"
+						src="./videos/Sup.webm"
+						type="video/webm">
+				<source class="ogv"
+						src="./videos/Sup.ogv"
+						type="video/ogg">
+				<source class="mp4"
+						src="./videos/Sup.mp4"
+						type="video/mp4">
+			</video>
+
+			<video id="ll" class="supvid" loop>
+				<source class="webm"
+						src="./videos/Sup.webm"
+						type="video/webm">
+				<source class="ogv"
+						src="./videos/Sup.ogv"
+						type="video/ogg">
+				<source class="mp4"
+						src="./videos/Sup.mp4"
+						type="video/mp4">
+			</video>
+
+			<video id="lr" class="supvid" loop>
+				<source class="webm"
+						src="./videos/Sup.webm"
+						type="video/webm">
+				<source class="ogv"
+						src="./videos/Sup.ogv"
+						type="video/ogg">
+				<source class="mp4"
+						src="./videos/Sup.mp4"
+						type="video/mp4">
+			</video>
+
+			<div class="warhol-c"></div>
+
+			<div class="warhol-m"></div>
+
+			<div class="warhol-y"></div>
+
+			<div class="warhol-t"></div>
+
+		</div>
+
+		<hr>
+
+		<h1>
+			A NIGHT OF STAND UP WITH ADAM DEVINE
+		</h1>
+
+		<hr>
+
+		<h2>
+			TUESDAY APRIL 8 | 7 PM<br>
+Featuring Comedian Adam Ray and Student Openers Alex Heller and Mike Schultz <br><br>
+
+TICKETS $5 AT WWW.NBO.NORTHWESTERN.EDU<br><br>
+
+DOORS: 6 PM<br>
+SHOW: 7PM<br>
+Pick-Staiger Concert Hall <br><br>
+
+*NO RE-ENTRY, NO CAMERAS, NO REFUNDS, NO EXCHANGES, A&O *WILL* CHECK WILDCARDS AT THE VENUE *<br><br>
+
+<a href='./'>HOMEPAGE</a> | <a href='http://www.aoproductions.net'>SPRING EVENTS</a><br><br>
+		</h2>
+
+	</div>
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+	<script type="text/javascript">
+
+		var danced = document.cookie.split(';').filter(function(el) {
+			console.log(el);
+			return el.split('=')[0] === 'devine_has_danced';
+		})[0];
+
+		console.log(danced);
+
+		if(danced) {
+			danced = danced.split('=')[1];
+			if(danced) {
+				$('h1').css('opacity', '1');
+				setTimeout(function () { $('h2').css('opacity', '1'); }, 4000);
+				$('hr').css('opacity', '1');
+			}
+		}
+
+		$('#tl').on('canplay', function() {
+				var off = $('#tl').height();
+				offsetTop(off);
+
+			if(!danced) {
+				document.cookie = 'devine_has_danced=yes';
+			}
+
+			this.play();
+			setTimeout(function() {play('#tr')}, 1500);
+			setTimeout(function() {play('#ll')}, 3000);
+			setTimeout(function() {play('#lr')}, 4500);
+
+			if (!danced) {
+			setTimeout(function() { $('h1').css('opacity', '1'); $('h2').css('opacity', '1'); $('hr').css('opacity', '1'); }, 6000);
+			}
+		});
+
+		function play(id) {
+			$(id)[0].play();
+		}
+
+		function offsetTop(topoff) {
+			$('#ll').css('top', topoff);
+			$('#lr').css('top', topoff);
+			$('div[class*="warhol-"]').height(topoff);
+			$('.warhol-y').css('top', topoff);
+			$('.warhol-t').css('top', topoff);
+			$($('hr')[1]).css({marginTop: topoff * 2 + 40});
+		}
+
+		$(window).resize(function() {
+			var topoff = $('#tl').height();
+			$('#ll').css('top', topoff);
+			$('#lr').css('top', topoff);
+			$('div[class*="warhol-"]').height(topoff);
+			$('.warhol-y').css('top', topoff);
+			$('.warhol-t').css('top', topoff);
+			$($('hr')[1]).css({marginTop: topoff * 2.3});
+			$('#tl').on('canplay', function() {
+			this.play();
+			setTimeout(function() {play('#tr')}, 1500);
+			setTimeout(function() {play('#ll')}, 3000);
+			setTimeout(function() {play('#lr')}, 4500);
+		});
+		});
+
+	</script>
+
+</html>

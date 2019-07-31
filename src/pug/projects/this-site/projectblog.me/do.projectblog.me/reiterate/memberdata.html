@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Give a Little Bit</title>
+
+<style type="text/css">
+
+@import url(http://fonts.googleapis.com/css?family=Cantarell);
+
+
+	html,body 		{	margin: 0;
+						width: 100%;
+						background-image: url('images/-Icon-Small.png');
+						background-position: 0% -8%;
+						background-attachment: fixed;
+						background-repeat: no-repeat;	}
+
+	p 				{	font-family: Cantarell, helvetica, arial, sans-serif;
+								font-size: 1.5em;
+								text-align: center;	}
+
+	#teaminfoform 	{	width: 800px; margin: 50px auto;
+						vertical-align: middle;
+						padding-top: 10px;
+						box-shadow: 0px 0px 50px -20px rgba(0,0,0,0.6), 
+									0px 2px 1px -1px #fff, 
+									0px 10px 10px -5px #bbb, 
+									inset 0px 0px 8px #ccc;
+						border-style: solid;
+						border-color: #bbb;
+						border-width: 1px 1px 0 1px;
+						border-radius: 15px;
+						background: url('./images/brushed.png') repeat 0% 0%;	}
+
+	#teaminfoform fieldset 	{	width: 90%;
+								margin-left: 5%;	}
+
+	#teaminfoform fieldset *, #teaminfoform input 
+							{ 	width: 100%;
+								border: none;
+								outline: none;
+								font-family: Cantarell, helvetica, arial, sans-serif;
+								font-size: 2em;	}
+
+	#teaminfoform textarea 	{	margin: 10px auto;
+								padding: 5px 0 5px 5px;
+								border-radius: 10px;
+								box-shadow: 0px 2px 1px 0px #ddd, 
+											0px 5px 3px -2px #aaa;
+								resize: none;	}
+
+	#teaminfoform input 	{	background: white;
+								cursor: pointer;
+								color: #555;
+								text-shadow: 1px 1px 1px #ddd;
+								border-bottom-left-radius: 15px;
+								border-bottom-right-radius: 15px;	}
+
+	#teaminfoform input:active 	{	box-shadow: inset 0px 0px 10px gainsboro;	}
+
+	fieldset 		{	border: none;
+						outline: none;
+						padding: 0;	}
+
+</style>
+
+</head>
+<body>
+
+	<p>This is where I solicit team data. Comply or die. :D</p>
+
+<form id="teaminfoform" enctype="application/x-www-form-urlencoded">
+
+	<fieldset>
+		<textarea placeholder="Name" name="name" rows="1" required></textarea>
+		<input type="hidden" id="set:about" name="about">
+		<textarea placeholder="Year" name="about:year" rows="1" required></textarea>
+		<textarea placeholder="Title (if applicable) - i.e.; partymaster, president, president's caterer" name="about:title" rows="2" required></textarea>
+		<textarea placeholder="Passion (preferably 3 words or less)" name="about:passion" rows="3" required></textarea>
+		<textarea placeholder="Blurb about me (3-5 sentences, max)" name="about:blurb" rows="5" required></textarea>
+	</fieldset>
+
+	<input type="submit">
+
+</form>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+$('#teaminfoform').submit(function(event) {
+
+	$('#set\\:about').val($.map($('[name^=about\\:]'), function(item, index) {
+		return $(item).val();
+	}));
+
+	console.log($('#set\\:about').val());
+	
+	$.ajax({
+		url: './savemember.php',
+		type: 'POST',
+		dataType: 'html',
+		data: $(this).serialize(),
+	})
+	.done(function(data) {
+		console.log("shahahar it werks");
+		console.log(data);
+	})
+	.fail(function() {
+		console.log("call to save member data failed");
+	});
+	
+	return false;
+});
+
+</script>
+
+</body>
+</html>
