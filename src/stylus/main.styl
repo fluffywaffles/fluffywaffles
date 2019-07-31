@@ -56,6 +56,48 @@ html, body
 body
   overflow-y scroll
 
+main > *:last-child
+  padding-bottom 200px
+
+section
+  max-width content-max-width
+  margin-left content-left-space
+
+header
+  background header-background-color
+  h1
+    padding-left content-left-space
+    margin 0
+    padding-top 5px
+    padding-bottom 5px
+    background #2c323c
+
+nav
+  padding 10px
+  margin-left 0
+  &[horizontal]
+    padding 0
+  a
+    text-decoration none
+    color inherit
+
+ul
+  margin 0
+  padding 0
+  list-style-type none
+  li
+    margin 0
+    padding 0
+    line-height li-line-height
+    padding-left li-bullet-space
+    &::before
+      content ''
+      position relative
+      left -1 * li-bullet-space
+    & > ul
+      margin-left 0
+      padding-left 25px
+
 dl
   dd
     margin-top 10px
@@ -78,68 +120,17 @@ code
   background-color highlight-background-color
   padding 0px 10px
 
-.content
-  max-width content-max-width
-
-.content--margin-aligned
-  margin-left content-left-space
-
-.content--padding-aligned
-  padding-left content-left-space
-
-body.index
-  header
-    padding-top 50px
-    .fluffywaffles-logo
-      left "calc(50% - %s)" % (logo-width / 2)
-
-  header > h1.main-title::before
-    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
-      index-content-max-width h1-character-width
-    )
-
-  header > h1.main-title::after
-    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
-      index-content-max-width fluffywaffles-characters h1-character-width
-    )
-
-  header > h1
-    padding-left index-content-left-space
-
-  section, nav.inline
-    max-width index-content-max-width
-
-  section
-    margin-left index-content-left-space
-
-@media all and (max-width: content-max-width)
-  .content
-    max-width calc(100% - 20px)
-
-  .content--margin-aligned
-    margin-left 40px
-
-  .content--padding-aligned
-    padding-left 40px
+.panel
+  padding 50px 20px
+  background highlight-background-color
 
 img.sink
   width calc(100% - 10px)
   border 20px solid highlight-background-color
 
-main > *:last-child
-  padding-bottom 200px
+nav.inline
+  max-width content-max-width
 
-section
-  @extend .content
-
-header
-  background header-background-color
-  h1
-    @extend .content--padding-aligned
-    margin 0
-    padding-top 5px
-    padding-bottom 5px
-    background #2c323c
 
 header > h1.main-title
   position relative
@@ -173,43 +164,6 @@ header > h1.main-title
     )
     @media all and (max-width: content-max-width)
       left 40px + (fluffywaffles-characters + 1.5) * h1-character-width
-
-section
-  @extend .content
-  @extend .content--margin-aligned
-
-.panel
-  padding 50px 20px
-  background highlight-background-color
-
-nav.inline
-  @extend .content
-
-nav
-  padding 10px
-  margin-left 0
-  &[horizontal]
-    padding 0
-  a
-    text-decoration none
-    color inherit
-
-ul
-  margin 0
-  padding 0
-  list-style-type none
-  li
-    margin 0
-    padding 0
-    line-height li-line-height
-    padding-left li-bullet-space
-    &::before
-      content ''
-      position relative
-      left -1 * li-bullet-space
-    & > ul
-      margin-left 0
-      padding-left 25px
 
 // NOTE(jordan): only supports sublists 1 level deep
 ul.collapsible-tree
@@ -279,6 +233,41 @@ ul.collapsible-tree
     z-index 1
     left logo-drip-offset-x
     top logo-height - logo-drip-offset-y
+
+body.index
+  header
+    padding-top 50px
+    .fluffywaffles-logo
+      left "calc(50% - %s)" % (logo-width / 2)
+
+  header > h1.main-title::before
+    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
+      index-content-max-width h1-character-width
+    )
+
+  header > h1.main-title::after
+    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
+      index-content-max-width fluffywaffles-characters h1-character-width
+    )
+
+  header > h1
+    padding-left index-content-left-space
+
+  section, nav.inline
+    max-width index-content-max-width
+
+  section
+    margin-left index-content-left-space
+
+@media all and (max-width: content-max-width)
+  header > h1
+    padding-left 20px
+
+  section, nav.inline
+    max-width calc(100% - 40px)
+
+  section
+    margin-left 20px
 
 @keyframes blink
   0%
