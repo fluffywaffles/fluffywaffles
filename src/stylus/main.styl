@@ -112,11 +112,14 @@ h3
   font-size font-size
 
 a
+  text-decoration none
   color lighten(body-text-color, 10%)
-
-code
   background-color highlight-background-color
   padding 0px 10px
+  &:hover
+    background-color lighten(highlight-background-color, 10%)
+  &:active
+    font-style italic
 
 .panel
   padding 50px 20px
@@ -170,6 +173,12 @@ ul.collapsible-tree
       min-width (body-character-width * 33)
       position relative
       text-overflow ellipsis
+      a
+        background-color transparent
+        &:hover
+          background-color transparent
+        &:active
+          font-style normal
       ul
         padding-left li-bullet-space * 2
         margin-left li-bullet-space
