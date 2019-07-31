@@ -10,7 +10,7 @@ h1-font-size = font-size * 1.66
 h2-font-size = font-size * 1.33
 // NOTE(jordan): there is no h3. Don't ask about 4, 5, and 6.
 
-li-bullet-space = 10px
+li-bullet-space = body-character-width
 li-spacing = 20px
 li-line-height = 14px + li-spacing
 
@@ -77,6 +77,8 @@ nav
   margin-left 0
   &[horizontal]
     padding 0
+    max-width content-max-width
+    margin-left content-left-space
   a
     text-decoration none
     color inherit
@@ -89,14 +91,10 @@ ul
     margin 0
     padding 0
     line-height li-line-height
-    padding-left li-bullet-space
     &::before
       content ''
       position relative
       left -1 * li-bullet-space
-    & > ul
-      margin-left 0
-      padding-left 25px
 
 dl
   dd
@@ -127,10 +125,6 @@ code
 img.sink
   width calc(100% - 10px)
   border 20px solid highlight-background-color
-
-nav.inline
-  max-width content-max-width
-
 
 header > h1.main-title
   position relative
@@ -172,12 +166,14 @@ ul.collapsible-tree
     flex-wrap wrap
     li
       white-space nowrap
-      flex 1 0 (body-character-width * 40)
+      flex 0 1 50%
+      min-width (body-character-width * 33)
       position relative
       text-overflow ellipsis
       ul
+        padding-left li-bullet-space * 2
         margin-left li-bullet-space
-        max-width "calc(100% - %s)" % (li-bullet-space)
+        max-width "calc(100% - %s)" % (li-bullet-space * 3)
         position absolute
         background highlight-background-color
         padding-right 20px
@@ -195,15 +191,16 @@ ul.collapsible-tree
   li
     color body-text-color
     cursor pointer
+    padding-left li-bullet-space
+    &:hover
+      color #fff
     &::before
       content '-'
     &.collapse-1, &.collapse-2, &.collapse-3
       &::before
         content '+'
-    &.open::before
-      content '-'
-    &:hover
-      color #fff
+      &.open::before
+        content '-'
     &.collapse-0::before
       content '<'
 
@@ -257,7 +254,7 @@ body.index
   header > h1
     padding-left index-content-left-space
 
-  section, nav.inline
+  section
     max-width index-content-max-width
 
   section
@@ -268,10 +265,8 @@ breakpoint = content-max-width + 40px
   header > h1
     padding-left 20px
 
-  section, nav.inline
+  section, nav[horizontal]
     max-width calc(100% - 40px)
-
-  section
     margin-left 20px
 
 @keyframes blink
