@@ -3,25 +3,36 @@
   "version": "0.0.0",
   "description": "personal website",
   "scripts": {
-    "clean": "rm -rf $npm_package_build_directory $npm_package_develop_directory",
-    "build:setup": "mkdir $npm_package_build_directory",
-    "develop:setup": "mkdir $npm_package_develop_directory",
     "pug": "pug -b $npm_package_pug_source $npm_package_pug_source",
     "stylus": "stylus $npm_package_stylus_source",
     "js": "cp -r $npm_package_js_source",
+    "build:setup": "mkdir $npm_package_build_directory",
+    "build:clean": "rm -rf $npm_package_build_directory",
+    "build:projectblog.me": "cp -r $npm_package_projectblog_source $npm_package_build_directory/projects/this-site",
+    "build:fiddlenaut": "cp -r $npm_package_fiddlenaut_source $npm_package_build_directory/projects",
     "build:assets": "cp -r $npm_package_assets_source $npm_package_build_directory",
     "build:pug": "npm run pug -- -o $npm_package_build_directory",
     "build:js": "npm run js -- $npm_package_build_directory",
     "build:stylus": "npm run stylus -- -o $npm_package_build_directory",
-    "build": "npm run clean && npm run build:setup && npm run build:assets && npm run build:js && npm run build:pug & npm run build:stylus & wait $(jobs -p)",
+    "build": "npm run build:clean && npm run build:setup && npm run build:assets && npm run build:js && npm run build:pug & npm run build:stylus & wait $(jobs -p) && npm run build:projectblog.me",
+    "develop:setup": "mkdir $npm_package_develop_directory",
+    "develop:clean": "rm -rf $npm_package_develop_directory",
+    "develop:projectblog.me": "cp -r $npm_package_projectblog_source $npm_package_develop_directory/projects/this-site",
+    "develop:fiddlenaut": "cp -r $npm_package_fiddlenaut_source $npm_package_develop_directory/projects",
     "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
     "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
     "develop:js": "ln -s $(git rev-parse --show-toplevel)/$npm_package_js_source $npm_package_develop_directory/js &",
     "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory &",
     "develop:serve": "browser-sync start --config bs-config.js",
-    "develop": "npm run clean && npm run develop:setup && npm run develop:assets && npm run develop:js && npm run develop:pug && npm run develop:stylus && npm run develop:serve",
+    "develop": "npm run develop:clean && npm run develop:setup && npm run develop:assets && npm run develop:js && npm run develop:pug && npm run develop:stylus  && npm run develop:serve",
     "deploy": "git tag deploy-$(date +'%Y-%m-%d-%H.%M.%S') && git push --tags && npm run build && rsync -v -e 'ssh' --progress --recursive dist/* deploy@fw:~/site",
     "start": "npm run develop"
+  },
+  "projectblog": {
+    "source": "src/pug/projects/this-site/projectblog.me"
+  },
+  "fiddlenaut": {
+    "source": "src/pug/projects/fiddlenaut"
   },
   "js": {
     "source": "src/js"
@@ -36,10 +47,10 @@
     "source": "audio fonts images"
   },
   "develop": {
-    "directory": "tmp/"
+    "directory": "tmp"
   },
   "build": {
-    "directory": "dist/"
+    "directory": "dist"
   },
   "repository": {
     "type": "git",
