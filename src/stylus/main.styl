@@ -2,7 +2,7 @@
 // HACK(jordan): this ratio is bullshitted by trial-and-error
 font-size = 16px
 character-height-width-ratio = (11.25/20)
-content-offset-characters = 13
+fluffywaffles-characters = 13
 
 h1-font-size = font-size * 1.66
 h2-font-size = font-size * 1.33
@@ -11,30 +11,36 @@ h2-font-size = font-size * 1.33
 h1-character-width = character-height-width-ratio * h1-font-size
 body-character-width = character-height-width-ratio * font-size
 body-text-color = #abb2bf
-main-background-color = #282c34
-body-background-color = lighten(main-background-color, 10%)
+body-background-color = #282c34
+header-background-color = lighten(body-background-color, 10%)
+highlight-background-color = lighten(header-background-color, 10%)
 
-content-max-width = body-character-width * 45
-content-left-space = "calc(50% - (%s * %s))" % (h1-character-width content-offset-characters)
+content-max-width = body-character-width * 74
+content-left-space = "calc(50% - (%s / 2))" % (content-max-width)
 content-overlay-margin = 50px
 
-.fit-content
-  width content-max-width
-
 .content
-  @extend .fit-content
+  max-width content-max-width
+
+.content--margin-aligned
   margin-left content-left-space
 
-img.overlay-content
-  overlay-width = content-max-width + (content-overlay-margin * 2)
-  width overlay-width
-  position relative
-  left -1 * content-overlay-margin
-  transition width 0.5s ease, left 0.5s ease, top 0.5s ease
+.content--padding-aligned
+  padding-left content-left-space
+
+@media all and (max-width: content-max-width)
+  .content
+    max-width calc(100% - 20px)
+
+  .content--margin-aligned
+    margin-left 40px
+
+  .content--padding-aligned
+    padding-left 40px
 
 img.sink
-  width content-max-width - 10px
-  border 20px solid body-background-color
+  width calc(100% - 10px)
+  border 20px solid highlight-background-color
 
 dl
   dd
@@ -78,40 +84,33 @@ html, body
 body
   overflow-y scroll
 
+code
+  background-color highlight-background-color
+  padding 0px 10px
+
 main
-  background main-background-color
   width 100%
-  min-height 100%
-  padding-bottom 200px
+  & > *:last-child
+    padding-bottom 200px
   section#intro, section#outro
     p, li
-      @extend .fit-content
+      @extend .content
 
 header
-  background body-background-color
+  background header-background-color
   justify-content center
   flex-wrap wrap
   .fluffywaffles-logo
     left calc(50% - 100px)
-    margin-top 50px
   h1
-    padding 5px 0
-    padding-left content-left-space
+    @extend .content--padding-aligned
+    padding-top 5px
+    padding-bottom 5px
     font-size h1-font-size
     margin 0
     flex 1 0 100%
     background #2c323c
     position relative
-    &::before
-      content ''
-      overflow hidden
-      position absolute
-      font-size @font-size
-      top 0
-      left 0
-      width "calc(50% - (%s * (%s + 1.5)))" % (h1-character-width content-offset-characters)
-      height 100%
-      background #50545a
 
 li-bullet-space = 10px
 li-spacing = 20px
@@ -119,16 +118,14 @@ li-line-height = 14px + li-spacing
 
 section
   @extend .content
-
-nav.inline
-  margin-left content-left-space
-  width content-max-width
+  @extend .content--margin-aligned
 
 .panel
   padding 50px 20px
-  background lighten(body-background-color, 10%)
+  background highlight-background-color
 
 nav
+  @extend .content
   padding 10px
   margin-left 0
   &[horizontal]
@@ -229,16 +226,31 @@ waffle_font=#ffbe00
     left logo-drip-offset-x
     top logo-height - logo-drip-offset-y
 
-header > h1.blinking-cursor::after
+header > h1.main-title::before
   content ''
+  overflow hidden
   position absolute
+  font-size @font-size
   top 0
-  left "calc(50% + (%s * (13 - (%s - 1.5))))" % (h1-character-width content-offset-characters)
+  left 0
+  width "calc(50% - (%s / 2) - 1.5 * %s)" % (content-max-width h1-character-width)
+  height 100%
+  background #50545a
+  @media all and (max-width: content-max-width)
+    width 40px - (1.5 * h1-character-width)
+
+header > h1.main-title::after
+  content ''
   width h1-character-width - 1px
   height 100%
   display block
   background white
   animation blink 0.8s infinite alternate
+  position absolute
+  top 0
+  left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (content-max-width fluffywaffles-characters h1-character-width)
+  @media all and (max-width: content-max-width)
+    left 40px + (fluffywaffles-characters + 1.5) * h1-character-width
 
 @keyframes blink
   0%
