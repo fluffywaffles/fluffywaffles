@@ -1,3 +1,5 @@
+@import "fonts"
+
 // Font & layout variables (only works w/ mononoki)
 // HACK(jordan): this ratio is bullshitted by trial-and-error
 font-size = 16px
@@ -7,6 +9,10 @@ fluffywaffles-characters = 13
 h1-font-size = font-size * 1.66
 h2-font-size = font-size * 1.33
 // NOTE(jordan): there is no h3. Don't ask about 4, 5, and 6.
+
+li-bullet-space = 10px
+li-spacing = 20px
+li-line-height = 14px + li-spacing
 
 h1-character-width = character-height-width-ratio * h1-font-size
 body-character-width = character-height-width-ratio * font-size
@@ -19,28 +25,36 @@ content-max-width = body-character-width * 74
 content-left-space = "calc(50% - (%s / 2))" % (content-max-width)
 content-overlay-margin = 50px
 
-.content
-  max-width content-max-width
+index-content-max-width = body-character-width * 45
+index-content-left-space = "calc(50% - (%s / 2))" % (
+  index-content-max-width
+)
 
-.content--margin-aligned
-  margin-left content-left-space
+// Logo variables
+logo-width = 200px
+logo-height = 150px
+// HACK(jordan): these offsets are hard-coded
+logo-drip-offset-x = 20px
+logo-drip-offset-y = 40px
+logo-height-with-drips = logo-height * 2 - logo-drip-offset-y
 
-.content--padding-aligned
-  padding-left content-left-space
+logo_waffle_yellow=#ffff00
+logo_waffle_dip=#ffe600
+logo_waffle_edge=#ffd200
 
-@media all and (max-width: content-max-width)
-  .content
-    max-width calc(100% - 20px)
+*
+  box-sizing border-box
 
-  .content--margin-aligned
-    margin-left 40px
+html, body
+  margin 0
+  min-height 100%
+  background body-background-color
+  font-family mononoki, monospace
+  color body-text-color
+  font-size font-size
 
-  .content--padding-aligned
-    padding-left 40px
-
-img.sink
-  width calc(100% - 10px)
-  border 20px solid highlight-background-color
+body
+  overflow-y scroll
 
 dl
   dd
@@ -58,63 +72,105 @@ h3
 a
   color lighten(body-text-color, 10%)
 
-// Logo variables
-logo-width = 200px
-logo-height = 150px
-// HACK(jordan): these offsets are hard-coded
-logo-drip-offset-x = 20px
-logo-drip-offset-y = 40px
-logo-height-with-drips = logo-height * 2 - logo-drip-offset-y
-
-@font-face
-  font-family "mononoki"
-  src url('/fonts/mononoki-Regular.woff2'), url('/fonts/mononoki-Regular.woff'), url('/fonts/mononoki-Regular.eot'), url('/fonts/mononoki-Regular.ttf')
-
-*
-  box-sizing border-box
-
-html, body
-  margin 0
-  min-height 100%
-  background body-background-color
-  font-family mononoki, monospace
-  color body-text-color
-  font-size font-size
-
-body
-  overflow-y scroll
-
 code
   background-color highlight-background-color
   padding 0px 10px
 
-main
-  width 100%
-  & > *:last-child
-    padding-bottom 200px
-  section#intro, section#outro
-    p, li
-      @extend .content
+.content
+  max-width content-max-width
+
+.content--margin-aligned
+  margin-left content-left-space
+
+.content--padding-aligned
+  padding-left content-left-space
+
+body.index
+  header
+    padding-top 50px
+    .fluffywaffles-logo
+      left "calc(50% - %s)" % (logo-width / 2)
+
+  header > h1.main-title::before
+    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
+      index-content-max-width h1-character-width
+    )
+
+  header > h1.main-title::after
+    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
+      index-content-max-width fluffywaffles-characters h1-character-width
+    )
+
+  header > h1
+    padding-left index-content-left-space
+
+  section, nav.inline
+    max-width index-content-max-width
+
+  section
+    margin-left index-content-left-space
+
+@media all and (max-width: content-max-width)
+  .content
+    max-width calc(100% - 20px)
+
+  .content--margin-aligned
+    margin-left 40px
+
+  .content--padding-aligned
+    padding-left 40px
+
+img.sink
+  width calc(100% - 10px)
+  border 20px solid highlight-background-color
+
+main > *:last-child
+  padding-bottom 200px
+
+section
+  @extend .content
 
 header
   background header-background-color
-  justify-content center
-  flex-wrap wrap
-  .fluffywaffles-logo
-    left calc(50% - 100px)
   h1
     @extend .content--padding-aligned
+    margin 0
     padding-top 5px
     padding-bottom 5px
-    font-size h1-font-size
-    margin 0
-    flex 1 0 100%
     background #2c323c
-    position relative
 
-li-bullet-space = 10px
-li-spacing = 20px
-li-line-height = 14px + li-spacing
+header > h1.main-title
+  position relative
+
+  &:before
+    content ''
+    overflow hidden
+    position absolute
+    font-size @font-size
+    top 0
+    left 0
+    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
+      content-max-width h1-character-width
+    )
+    height 100%
+    background #50545a
+    @media all and (max-width: content-max-width)
+      width 40px - (1.5 * h1-character-width)
+
+  &::after
+    content ''
+    width h1-character-width - 1px
+    height 100%
+    display block
+    background white
+    animation blink 0.8s infinite alternate
+    position absolute
+    top 0
+    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
+      content-max-width fluffywaffles-characters h1-character-width
+    )
+    @media all and (max-width: content-max-width)
+      left 40px + (fluffywaffles-characters + 1.5) * h1-character-width
 
 section
   @extend .content
@@ -124,8 +180,10 @@ section
   padding 50px 20px
   background highlight-background-color
 
-nav
+nav.inline
   @extend .content
+
+nav
   padding 10px
   margin-left 0
   &[horizontal]
@@ -134,17 +192,34 @@ nav
     text-decoration none
     color inherit
 
+ul
+  margin 0
+  padding 0
+  list-style-type none
+  li
+    margin 0
+    padding 0
+    line-height li-line-height
+    padding-left li-bullet-space
+    &::before
+      content ''
+      position relative
+      left -1 * li-bullet-space
+    & > ul
+      margin-left 0
+      padding-left 25px
+
 // NOTE(jordan): only supports sublists 1 level deep
 ul.collapsible-tree
   &[horizontal]
     display flex
     flex-wrap wrap
     li, a
-      flex 1 0 300px
+      flex 1 0 50%
       position relative
       ul
         position absolute
-        background lighten(body-background-color, 10%)
+        background highlight-background-color
         padding-right 20px
         // TODO(jordan): generalize
         &.z-3
@@ -182,29 +257,6 @@ ul.collapsible-tree
     &.collapse-3 > ul
       height (li-line-height) * 3
 
-
-ul
-  margin 0
-  padding 0
-  list-style-type none
-  li
-    margin 0
-    padding 0
-    line-height li-line-height
-    padding-left li-bullet-space
-    &::before
-      content ''
-      position relative
-      left -1 * li-bullet-space
-    & > ul
-      margin-left 0
-      padding-left 25px
-
-waffle_yellow=#ffff00
-waffle_dip=#ffe600
-waffle_edge=#ffd200
-waffle_font=#ffbe00
-
 .fluffywaffles-logo
   width logo-width
   height logo-height-with-drips
@@ -225,32 +277,6 @@ waffle_font=#ffbe00
     z-index 1
     left logo-drip-offset-x
     top logo-height - logo-drip-offset-y
-
-header > h1.main-title::before
-  content ''
-  overflow hidden
-  position absolute
-  font-size @font-size
-  top 0
-  left 0
-  width "calc(50% - (%s / 2) - 1.5 * %s)" % (content-max-width h1-character-width)
-  height 100%
-  background #50545a
-  @media all and (max-width: content-max-width)
-    width 40px - (1.5 * h1-character-width)
-
-header > h1.main-title::after
-  content ''
-  width h1-character-width - 1px
-  height 100%
-  display block
-  background white
-  animation blink 0.8s infinite alternate
-  position absolute
-  top 0
-  left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (content-max-width fluffywaffles-characters h1-character-width)
-  @media all and (max-width: content-max-width)
-    left 40px + (fluffywaffles-characters + 1.5) * h1-character-width
 
 @keyframes blink
   0%
