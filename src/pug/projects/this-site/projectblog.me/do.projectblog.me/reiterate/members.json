@@ -1,0 +1,68 @@
+{
+	"members": [
+		{
+			"name": "Josephine Lee",
+			"about": {
+				"year": "Senior",
+				"passion": "Change",
+				"blurb": "I love Christmas, apple-bobbing, and entrepreneurship."
+			}
+		},
+		{
+			"name": "Lucas Matney",
+			"about": {
+				"year": "Senior",
+				"passion": "Journalism",
+				"blurb": "I like to par-tay. And write. Not usually at the same time."
+			}
+		},
+		{
+			"name": "Michael Chen",
+			"about": {
+				"year": "Junior",
+				"passion": "Sleep",
+				"blurb": "I code like a ninja in boxer shorts with a bag of lays in the dark of my room."
+			}
+		},
+		{
+			"name": "Suzee Han",
+			"about": {
+				"year": "Junior",
+				"passion": "Design",
+				"blurb": "If everything was designed by Epic, the world would be a better place."
+			}
+		},
+		{
+			"name": "Mats Gabriel Love Johansen",
+			"about": {
+				"year": "Senior",
+				"passion": "Working with Jordan",
+				"blurb": "I'm European. And sort of tall. And a little metro. But mostly I'm just awesome, because my name is Mats."
+			}
+		},
+		{
+			"name": "Saffan Ali",
+			"about": {
+				"year": "Junior",
+				"passion": "Fire",
+				"blurb": "Nothing is dangerous for me. I was a boy scout. And I, like Lucas, love to par-tay."
+			}
+		},
+		{
+			"name": "Nil Sen",
+			"about": {
+				"year": "Freshman",
+				"passion": "Entrepreneurship",
+				"blurb": "I'm Turkish and positively delightful."
+			}
+		},
+		{
+			"name": "Jordan Timmerman",
+			"about": {
+				"year": "Freshman",
+				"passion": "Web Development",
+				"blurb": "I talk to computers. I'm a computer whisperer. And shouter. And occasionally curser. And I don't have a picture. :'("
+			}
+		}
+	]
+}
