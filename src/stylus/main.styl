@@ -263,7 +263,8 @@ body.index
   section
     margin-left index-content-left-space
 
-@media all and (max-width: content-max-width)
+breakpoint = content-max-width + 40px
+@media all and (max-width: breakpoint)
   header > h1
     padding-left 20px
 
