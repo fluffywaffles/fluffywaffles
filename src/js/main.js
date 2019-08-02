@@ -16,7 +16,15 @@ function kill (state_evt, listeners) {
   listeners[state_evt].length = 0
 }
 
-// "Button" links. Using an <a> to make things clickable.
+/* "Button" links. Using an <a> to make things clickable.
+ * Why not use <button>?
+ *
+ * 1. It renders weird. (Sorry, but it does.)
+ * 2. This is a very special case of a button. I want a link, as in:
+ *    "clicking this will [eventually] result in linking to another page."
+ * 3. I want these to populate on the page as "links" for the purpose of
+ *    keyboard-assisted navigation. (TODO: make their aria-role button.)
+ */
 const button_links = document.querySelectorAll('a[data-button-link]')
 button_links.forEach(button_link => {
   if (button_link.innerText.length === 0) {
@@ -46,12 +54,6 @@ trees.forEach(tree => {
   const subtrees = [].filter.call(items, item => item.querySelectorAll('ul').length > 0)
   ;[].forEach.call(subtrees, subtree => {
     console.log('Collapsible Tree: setting click handler for subtree', subtree)
-    console.log(subtree.parentElement)
-    // if (subtree.parentElement.tagName === `A`) {
-    //   console.log('Collapsible Tree: subtree has anchor wrapper; selecting it')
-    //   subtree = subtree.parentElement
-    //   console.log('Collapsible Tree: new subtree is anchor parent', subtree)
-    // }
     function close (event) {
       subtree.classList.remove('open')
       document.body.removeEventListener('click', close)
