@@ -192,6 +192,9 @@ header > h1.main-title
 
 // NOTE(jordan): only supports sublists 1 level deep
 ul.collapsible-tree
+  li
+    ul
+      margin-left li-bullet-space * 2
   &[horizontal]
     display flex
     flex-wrap wrap
