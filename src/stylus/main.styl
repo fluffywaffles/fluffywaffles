@@ -72,6 +72,30 @@ header
     padding-bottom 5px
     background #2c323c
 
+a
+  text-decoration none
+  color lighten(body-text-color, 10%)
+  background-color highlight-background-color
+  padding 0px 10px
+  &:visited
+    color darken(body-text-color, 10%)
+    background-color darken(highlight-background-color, 10%)
+  &:hover
+    color lighten(body-text-color, 10%)
+    background-color lighten(highlight-background-color, 10%)
+  &:active
+    font-style italic
+  &.traditional
+    padding 0
+    text-decoration underline
+    background-color transparent
+    &:hover
+      background-color lighten(highlight-background-color, 10%)
+      text-decoration none
+      font-style italic
+    &:active
+      background-color transparent
+
 nav
   padding 10px
   margin-left 0
@@ -79,26 +103,22 @@ nav
     padding 0
     max-width content-max-width
     margin-left content-left-space
+  ul
+    li
+      margin 0
+      line-height li-line-height
   a
+    display inline-block
+    width calc(100% - 20px)
     background-color transparent
-    text-decoration none
-    color inherit
-    &:hover
-      background-color transparent
-    &:active
-      font-style normal
-      text-decoration underline
-    &[data-link-button]:active
-      text-decoration none
 
 ul
   margin 0
   padding 0
   list-style-type none
   li
-    margin 0
+    margin 10px 0
     padding 0
-    line-height li-line-height
     &::before
       content ''
       position relative
@@ -122,23 +142,14 @@ h3
 p + h2
   margin-top 50px
 
-a
-  text-decoration none
-  color lighten(body-text-color, 10%)
-  background-color highlight-background-color
-  padding 0px 10px
-  &:hover
-    background-color lighten(highlight-background-color, 10%)
-  &:active
-    font-style italic
-
 .panel
   padding 50px 20px
   background highlight-background-color
 
-
 .inset
-  padding-left 40px
+  ul
+    padding-left 20px
+    list-style-type disc
 
 img.sink
   width calc(100% - 10px)
@@ -183,18 +194,21 @@ ul.collapsible-tree
     display flex
     flex-wrap wrap
     li
+      line-height li-line-height
       white-space nowrap
-      flex 0 1 50%
+      flex 1 1 50%
       min-width (body-character-width * 33)
       position relative
       text-overflow ellipsis
       ul
-        padding-left li-bullet-space * 2
-        margin-left li-bullet-space
-        max-width "calc(100% - %s)" % (li-bullet-space * 3)
+        margin-left li-bullet-space - 0.5px
+        max-width 100%
         position absolute
         background highlight-background-color
-        padding-right 20px
+        li
+          padding-left li-bullet-space * 3
+          &:hover
+            background-color lighten(highlight-background-color, 10%)
         // TODO(jordan): generalize
         &.z-3
           z-index 3
