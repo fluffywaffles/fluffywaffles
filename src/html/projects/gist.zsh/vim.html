@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>~/gist.zsh.html</title>
+<meta name="Generator" content="Vim/8.0">
+<meta name="plugin-version" content="vim7.4_v2">
+<meta name="syntax" content="zsh">
+<meta name="settings" content="use_css,pre_wrap,no_foldcolumn,expand_tabs,prevent_copy=">
+<meta name="colorscheme" content="two-firewatch">
+<style type="text/css">
+<!--
+pre { white-space: pre-wrap; font-family: monospace; color: #afafaf; }
+body { font-family: monospace; color: #afafaf; }
+* { font-size: 1em; }
+.String { color: #d7afaf; }
+.Special { color: #5f87af; }
+.PreProc { color: #d7d7ff; }
+.Comment { color: #5f5f5f; font-style: italic; }
+.Todo { color: #d75f87; padding-bottom: 1px; }
+.Keyword { color: #d7d7ff; }
+.Operator { color: #5fafaf; }
+a { color: inherit; }
+-->
+</style>
+
+<script type='text/javascript'>
+<!--
+
+-->
+</script>
+</head>
+<body>
+<pre id='vimCodeElement'>
+<span class="PreProc">#!/bin/zsh</span>
+
+<span class="Keyword">function</span> json_quote {
+  node -e <span class="String">&quot;</span><span class="String">console.log(JSON.stringify(fs.readFileSync('</span><span class="PreProc">$1</span><span class="String">').toString()))</span><span class="String">&quot;</span>
+}
+
+github_gist_token=<span class="PreProc">$(</span>cat ~/.github-gist-token<span class="PreProc">)</span>
+file=<span class="PreProc">$1</span>
+quoted_file_contents=<span class="PreProc">$(</span>json_quote <span class="PreProc">$file</span><span class="PreProc">)</span>
+file_name=<span class="PreProc">$(</span>basename <span class="PreProc">$file</span><span class="PreProc">)</span>
+description=<span class="PreProc">${</span><span class="PreProc">2:-$file_name</span><span class="PreProc">}</span>
+
+<span class="Keyword">printf</span> -v json <span class="String">'</span><span class="String">{</span>
+<span class="String">  &quot;public&quot;: true,</span>
+<span class="String">  &quot;description&quot;: &quot;%s&quot;,</span>
+<span class="String">  &quot;files&quot;: { &quot;%s&quot;: { &quot;content&quot;: %s } }</span>
+<span class="String">}</span><span class="String">'</span> <span class="PreProc">$description</span> <span class="PreProc">$file_name</span> <span class="PreProc">$quoted_file_contents</span>
+
+response=<span class="PreProc">$(</span>mktemp<span class="PreProc">)</span>
+
+<span class="Operator">&gt;</span><span class="PreProc">$response</span> curl --silent                       \
+  -H <span class="String">&quot;</span><span class="String">Authorization: token </span><span class="PreProc">$github_gist_token</span><span class="String">&quot;</span> \
+  -X POST                                      \
+  -d <span class="String">&quot;</span><span class="PreProc">$json</span><span class="String">&quot;</span>                                   \
+  <span class="String">&quot;</span><span class="String"><a href="https://api.github.com/gists">https://api.github.com/gists</a></span><span class="String">&quot;</span>
+
+<span class="Keyword">echo</span> <span class="String">&quot;</span><span class="String">yooooou got it, champ!</span><span class="String">&quot;</span>
+
+<span class="Comment"># </span><span class="Todo">NOTE</span><span class="Comment">(jordan): this is NOT very robust! :)</span>
+cat <span class="PreProc">$response</span>                       \
+  <span class="Operator">|</span> grep <span class="String">&quot;</span><span class="Special">\&quot;</span><span class="String">html_url</span><span class="Special">\&quot;</span><span class="String">:</span><span class="String">&quot;</span>            \
+  <span class="Operator">|</span> grep <span class="String">&quot;</span><span class="String"><a href="https://gist.github.com/">https://gist.github.com/</a></span><span class="String">&quot;</span> \
+  <span class="Operator">|</span> cut -d: -f2-                    \
+  <span class="Operator">|</span> tr -d <span class="String">'</span><span class="String">&quot;, </span><span class="String">'</span>
+</pre>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->
