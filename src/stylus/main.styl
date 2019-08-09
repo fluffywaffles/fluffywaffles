@@ -70,11 +70,14 @@ section
 header
   background header-background-color
   h1
-    padding-left content-left-space
     margin 0
-    padding-top 5px
-    padding-bottom 5px
+    padding-top 0.75em
+    padding-bottom 0.75em
+    padding-left content-left-space
     background #2c323c
+    &.main-title
+      padding-top 5px
+      padding-bottom 5px
 
 a
   text-decoration none
@@ -104,7 +107,7 @@ nav
   padding 10px
   margin-left 0
   &[horizontal]
-    padding 0
+    padding 10px 0
     max-width content-max-width
     margin-left content-left-space
   ul
