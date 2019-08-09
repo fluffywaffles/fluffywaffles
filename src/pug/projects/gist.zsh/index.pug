@@ -1,0 +1,29 @@
+include /blog-mixins
+
++page('projects: gist.zsh')
+  main
+    header
+      +nav()(index, horizontal)
+      h1 Projects > gist.zsh
+    section#intro
+      h2 A Little Script for Making Gists
+      p.
+        I am taken with sending my friends random snippets of code. The
+        easiest, fastest way for me to to do that? I send a phone photo of
+        my monitor.
+      p.
+        Finally, a close friend of mine put his foot down. "For God's
+        sakes, stop sending me screenshots of a monitor! I'm not going to
+        read that."
+      p.
+        So, okay. It was finally time to write a script for quickly
+        uploading a gist from my computer. It requires node.js, zsh, and
+        curl, and that's it. And in true dogfooding spirit, the first
+        thing I ever gisted with gist.zsh... is gist.zsh, which you can
+        find here:
+        <a href="https://gist.github.com/fluffywaffles/c772131ecccbc08aca7f5d1726ecdc59">
+        gist.zsh</a>. It is included below, as well:
+    section
+      iframe.code(src='./vim.html')
+
+  script(src='/js/main.js')
