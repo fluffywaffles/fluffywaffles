@@ -242,7 +242,7 @@ ul.collapsible-tree
       color #fff
     &::before
       content '-'
-    &.collapse-1, &.collapse-2, &.collapse-3
+    &.collapse-1, &.collapse-2, &.collapse-3, &.collapse-4
       &::before
         content '+'
       &.open::before
@@ -259,6 +259,8 @@ ul.collapsible-tree
       height (li-line-height) * 2
     &.collapse-3 > ul
       height (li-line-height) * 3
+    &.collapse-4 > ul
+      height (li-line-height) * 4
 
 .fluffywaffles-logo
   width logo-width
