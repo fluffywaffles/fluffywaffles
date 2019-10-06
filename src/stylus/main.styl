@@ -164,9 +164,22 @@ iframe.code
     padding-left 20px
     list-style-type disc
 
+figure
+  margin 25px 0
+  & > img.sink
+    margin 0
+  & + figcaption
+    margin-top -25px
+    padding-bottom 25px
+
+figcaption
+  text-align center
+  font-style italic
+  background highlight-background-color
+
 img.sink
   margin 25px 0
-  width calc(100% - 10px)
+  width 100%
   border 20px solid highlight-background-color
 
 header > h1.main-title
