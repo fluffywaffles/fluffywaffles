@@ -3,29 +3,34 @@
 // Font & layout variables (only works w/ mononoki)
 // HACK(jordan): this ratio is bullshitted by trial-and-error
 font-size = 16px
-character-height-width-ratio = (11.25/20)
+mono-font-size = 17px
+mono-character-height-width-ratio = (105/200)
 fluffywaffles-characters = 13
 
+mono-h1-font-size = mono-font-size * 1.66
 h1-font-size = font-size * 1.66
 h2-font-size = font-size * 1.33
 // NOTE(jordan): there is no h3. Don't ask about 4, 5, and 6.
 
-li-bullet-space = body-character-width
+li-bullet-space = mono-body-character-width
 li-spacing = 20px
 li-line-height = 14px + li-spacing
 
-h1-character-width = character-height-width-ratio * h1-font-size
-body-character-width = character-height-width-ratio * font-size
+mono-h1-character-width = mono-character-height-width-ratio * mono-h1-font-size
+mono-body-character-width = mono-character-height-width-ratio * mono-font-size
 body-text-color = #abb2bf
 body-background-color = #282c34
 header-background-color = lighten(body-background-color, 10%)
 highlight-background-color = lighten(header-background-color, 10%)
 
-content-max-width = body-character-width * 74
+content-max-width = mono-body-character-width * 74
 content-left-space = "calc(50% - (%s / 2))" % (content-max-width)
 content-overlay-margin = 50px
 
-index-content-max-width = body-character-width * 45
+mono-font-family = mononoki, monospace
+body-font-family = serif
+
+index-content-max-width = mono-body-character-width * 45
 index-content-left-space = "calc(50% - (%s / 2))" % (
   index-content-max-width
 )
@@ -49,9 +54,10 @@ html, body
   margin 0
   min-height 100%
   background body-background-color
-  font-family mononoki, monospace
+  font-family body-font-family
   color body-text-color
   font-size font-size
+  line-height 1.3em
 
 body
   overflow-y scroll
@@ -62,10 +68,12 @@ main > *:last-child
 section
   max-width content-max-width
   margin-left content-left-space
-  margin-top 50px
-  margin-bottom 50px
+  margin-top 3em
+  margin-bottom 3em
   p
-    margin 25px 0
+    margin 1.5em 0
+    &:first-letter
+      margin-left 2em
 
 header
   background header-background-color
@@ -76,8 +84,12 @@ header
     padding-left content-left-space
     background #2c323c
     &.main-title
+      font-family mono-font-family
+      font-size mono-font-size
       padding-top 5px
       padding-bottom 5px
+  & + section
+    margin-top 2em
 
 a
   text-decoration none
@@ -104,6 +116,8 @@ a
       background-color transparent
 
 nav
+  font-family mono-font-family
+  font-size mono-font-size
   padding 10px
   margin-left 0
   &[horizontal]
@@ -156,7 +170,7 @@ iframe.code
   border-color highlight-background-color
 
 .panel
-  padding 50px 20px
+  padding 3em 2em
   background highlight-background-color
 
 .inset
@@ -165,12 +179,12 @@ iframe.code
     list-style-type disc
 
 figure
-  margin 25px 0
+  margin 1em 0
   & > img.sink
     margin 0
   & + figcaption
-    margin-top -25px
-    padding-bottom 25px
+    margin-top -1em
+    padding-bottom 1em
 
 figcaption
   text-align center
@@ -178,11 +192,12 @@ figcaption
   background highlight-background-color
 
 img.sink
-  margin 25px 0
+  margin 1em 0
   width 100%
   border 20px solid highlight-background-color
 
 header > h1.main-title
+  font-size mono-h1-font-size
   position relative
 
   &:before
@@ -193,16 +208,16 @@ header > h1.main-title
     top 0
     left 0
     width "calc(50% - (%s / 2) - 1.5 * %s)" % (
-      content-max-width h1-character-width
+      content-max-width mono-h1-character-width
     )
     height 100%
     background #50545a
     @media all and (max-width: content-max-width)
-      width 40px - (1.5 * h1-character-width)
+      width 40px - (1.5 * mono-h1-character-width)
 
   &::after
     content ''
-    width h1-character-width - 1px
+    width mono-h1-character-width - 1px
     height 100%
     display block
     background white
@@ -210,10 +225,10 @@ header > h1.main-title
     position absolute
     top 0
     left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
-      content-max-width fluffywaffles-characters h1-character-width
+      content-max-width fluffywaffles-characters mono-h1-character-width
     )
     @media all and (max-width: content-max-width)
-      left 40px + (fluffywaffles-characters + 1.5) * h1-character-width
+      left 40px + (fluffywaffles-characters + 1.5) * mono-h1-character-width
 
 // NOTE(jordan): only supports sublists 1 level deep
 ul.collapsible-tree
@@ -227,7 +242,7 @@ ul.collapsible-tree
       line-height li-line-height
       white-space nowrap
       flex 1 1 50%
-      min-width (body-character-width * 33)
+      min-width (mono-body-character-width * 33)
       position relative
       text-overflow ellipsis
       ul
@@ -307,12 +322,12 @@ body.index
 
   header > h1.main-title::before
     width "calc(50% - (%s / 2) - 1.5 * %s)" % (
-      index-content-max-width h1-character-width
+      index-content-max-width mono-h1-character-width
     )
 
   header > h1.main-title::after
     left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
-      index-content-max-width fluffywaffles-characters h1-character-width
+      index-content-max-width fluffywaffles-characters mono-h1-character-width
     )
 
   header > h1
