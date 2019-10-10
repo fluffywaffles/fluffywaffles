@@ -16,8 +16,8 @@ mixin nav()
           if attributes.index
             li.collapse-0
               a(href='/') index
-          li.collapse-5
-            a(data-button-link) words
+          li.collapse-3
+            a(data-button-link) day entries
               ul.z-3
                 li
                   a(href='/words/log/20191009.html')
@@ -26,11 +26,8 @@ mixin nav()
                   a(href='/words/log/20191005.html')
                     | 2019-10-05: $15 for boba
                 li
-                  a(href='/words/code') code [coming soon]
-                li
-                  a(href='/words/life') life [coming soon]
-                li
-                  a(href='/words/art') "art" [coming soon]
+                  a(href='/words/log/index.html')
+                    | all logs
           li.collapse-4
             a(data-button-link) projects
               ul.z-2
