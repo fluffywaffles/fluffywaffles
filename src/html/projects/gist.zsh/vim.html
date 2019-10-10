@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>~/gist.zsh.html</title>
 <meta name="Generator" content="Vim/8.0">
-<meta name="plugin-version" content="vim7.4_v2">
+<meta name="plugin-version" content="vim8.1_v1">
 <meta name="syntax" content="zsh">
 <meta name="settings" content="use_css,pre_wrap,no_foldcolumn,expand_tabs,prevent_copy=">
 <meta name="colorscheme" content="two-firewatch">
@@ -13,22 +13,15 @@
 pre { white-space: pre-wrap; font-family: monospace; color: #afafaf; }
 body { font-family: monospace; color: #afafaf; }
 * { font-size: 1em; }
+.Operator { color: #5fafaf; }
 .String { color: #d7afaf; }
-.Special { color: #5f87af; }
 .PreProc { color: #d7d7ff; }
 .Comment { color: #5f5f5f; font-style: italic; }
-.Todo { color: #d75f87; padding-bottom: 1px; }
+.Todo { color: #d75f87; background-color: #000000; padding-bottom: 1px; }
 .Keyword { color: #d7d7ff; }
-.Operator { color: #5fafaf; }
 a { color: inherit; }
 -->
 </style>
-
-<script type='text/javascript'>
-<!--
-
--->
-</script>
 </head>
 <body>
 <pre id='vimCodeElement'>
@@ -61,11 +54,13 @@ response=<span class="PreProc">$(</span>mktemp<span class="PreProc">)</span>
 <span class="Keyword">echo</span> <span class="String">&quot;</span><span class="String">yooooou got it, champ!</span><span class="String">&quot;</span>
 
 <span class="Comment"># </span><span class="Todo">NOTE</span><span class="Comment">(jordan): this is NOT very robust! :)</span>
-cat <span class="PreProc">$response</span>                       \
-  <span class="Operator">|</span> grep <span class="String">&quot;</span><span class="Special">\&quot;</span><span class="String">html_url</span><span class="Special">\&quot;</span><span class="String">:</span><span class="String">&quot;</span>            \
-  <span class="Operator">|</span> grep <span class="String">&quot;</span><span class="String"><a href="https://gist.github.com/">https://gist.github.com/</a></span><span class="String">&quot;</span> \
-  <span class="Operator">|</span> cut -d: -f2-                    \
-  <span class="Operator">|</span> tr -d <span class="String">'</span><span class="String">&quot;, </span><span class="String">'</span>
+node -e <span class="String">&quot;</span>
+<span class="String">  console.log(JSON.parse(</span>
+<span class="String">    require('fs')</span>
+<span class="String">      .readFileSync(process.argv[1])</span>
+<span class="String">      .toString()</span>
+<span class="String">  ).html_url)</span>
+<span class="String">&quot;</span> <span class="PreProc">$response</span>
 </pre>
 </body>
 </html>
