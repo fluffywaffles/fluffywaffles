@@ -27,7 +27,8 @@
     "develop:serve": "browser-sync start --config bs-config.js",
     "develop:copy-html": "cp -r src/html/* $npm_package_develop_directory && npm run develop:projectblog.me && npm run develop:fiddlenaut",
     "develop": "npm run develop:clean && npm run develop:setup && npm run develop:assets && npm run develop:js && npm run develop:pug && npm run develop:stylus && npm run develop:copy-html && npm run develop:serve",
-    "deploy": "npm run deploy:tag && npm run build && npm run deploy:sync && npm run build:clean",
+    "deploy": "npm run build:clean && npm run build && npm run deploy:chmod && npm run deploy:sync && npm run deploy:tag && npm run build:clean",
+    "deploy:chmod": "chmod -R 755 dist",
     "deploy:tag": "git tag deploy-$(date +'%Y-%m-%d-%H.%M.%S') && git push --tags",
     "deploy:sync": "rsync -v -e 'ssh' --progress --recursive dist/* deploy@fw:~/site",
     "start": "npm run develop"
