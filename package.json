@@ -8,36 +8,26 @@
     "js": "cp -r $npm_package_js_source",
     "build:setup": "mkdir $npm_package_build_directory && mkdir $npm_package_build_directory/styles",
     "build:clean": "rm -rf $npm_package_build_directory",
-    "build:projectblog.me": "cp -r $npm_package_projectblog_source $npm_package_build_directory/projects/this-site",
-    "build:fiddlenaut": "cp -r $npm_package_fiddlenaut_source $npm_package_build_directory/projects",
     "build:assets": "cp -r $npm_package_assets_source $npm_package_build_directory",
     "build:pug": "npm run pug -- -o $npm_package_build_directory",
     "build:js": "npm run js -- $npm_package_build_directory",
     "build:stylus": "npm run stylus -- -o $npm_package_build_directory/styles",
     "build:copy-html": " cp -r src/html/* $npm_package_build_directory",
-    "build": "npm run build:clean && npm run build:setup && npm run build:assets && npm run build:js && npm run build:pug & npm run build:stylus & wait $(jobs -p) && npm run build:projectblog.me && npm run build:fiddlenaut && npm run build:copy-html",
+    "build": "npm run build:clean && npm run build:setup && npm run build:assets && npm run build:js && npm run build:pug & npm run build:stylus & wait $(jobs -p) && npm run build:copy-html",
     "develop:setup": "mkdir $npm_package_develop_directory && mkdir $npm_package_develop_directory/styles",
     "develop:clean": "rm -rf $npm_package_develop_directory",
-    "develop:projectblog.me": "cp -r $npm_package_projectblog_source $npm_package_develop_directory/projects/this-site",
-    "develop:fiddlenaut": "cp -r $npm_package_fiddlenaut_source $npm_package_develop_directory/projects",
     "develop:assets": "cp -r $npm_package_assets_source $npm_package_develop_directory",
     "develop:pug": "npm run pug -- -w -o $npm_package_develop_directory &",
     "develop:js": "ln -s $(git rev-parse --show-toplevel)/$npm_package_js_source $npm_package_develop_directory/js &",
     "develop:stylus": "npm run stylus -- -w -o $npm_package_develop_directory/styles &",
     "develop:serve": "browser-sync start --config bs-config.js",
-    "develop:copy-html": "cp -r src/html/* $npm_package_develop_directory && npm run develop:projectblog.me && npm run develop:fiddlenaut",
+    "develop:copy-html": "cp -r src/html/* $npm_package_develop_directory",
     "develop": "npm run develop:clean && npm run develop:setup && npm run develop:assets && npm run develop:js && npm run develop:pug && npm run develop:stylus && npm run develop:copy-html && npm run develop:serve",
     "deploy": "npm run build:clean && npm run build && npm run deploy:chmod && npm run deploy:sync && npm run deploy:tag && npm run build:clean",
     "deploy:chmod": "chmod -R 755 dist",
     "deploy:tag": "git tag deploy-$(date +'%Y-%m-%d-%H.%M.%S') && git push --tags",
     "deploy:sync": "rsync -v -e 'ssh' --progress --recursive dist/* deploy@fw:~/site",
     "start": "npm run develop"
-  },
-  "projectblog": {
-    "source": "src/pug/projects/this-site/projectblog.me"
-  },
-  "fiddlenaut": {
-    "source": "src/pug/projects/fiddlenaut"
   },
   "js": {
     "source": "src/js"
