@@ -68,9 +68,9 @@
   },
   "homepage": "https://github.com/skorlir/fluffywaffles#readme",
   "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "pug": "^2.0.4",
+    "browser-sync": "^2.26.13",
+    "pug": "^3.0.0",
     "pug-cli": "^1.0.0-alpha6",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.8"
   }
 }
