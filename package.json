@@ -26,7 +26,7 @@
     "deploy": "npm run build:clean && npm run build && npm run deploy:chmod && npm run deploy:sync && npm run deploy:tag && npm run build:clean",
     "deploy:chmod": "chmod -R 755 dist",
     "deploy:tag": "git tag deploy-$(date +'%Y-%m-%d-%H.%M.%S') && git push --tags",
-    "deploy:sync": "rsync -v -e 'ssh' --progress --recursive dist/* deploy@fw:~/site",
+    "deploy:sync": "rsync --verbose --rsh 'ssh' --progress --checksum --recursive dist/* deploy@fw:~/site",
     "start": "npm run develop"
   },
   "js": {
