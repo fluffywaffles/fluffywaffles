@@ -1,0 +1,288 @@
+include /blog-mixins
+
++page('code: 2021-01-30: Everything New is Broken Again')
+  main
+    header
+      +nav()(index, horizontal)
+      h1 Everything New is Broken Again
+    section#content
+      section
+        p.
+          I recently purchased a new 7th generation Lenovo X1 Carbon and
+          promptly (after procrastinating for a month) installed my Arch
+          Linux environment. This is my story.
+        p.
+          I had no issues with the USB Installer, connecting to wifi,
+          running `pacstrap base btrfs-progs wpa_supplicant dhcpcd` and so
+          on. I installed my <a
+          href="https://github.com/fluffywaffles/initcpio-hooks">custom
+          initcpio hook</a> so that `/usr/bin`, `/usr/lib`, `/etc`, and
+          so on can be placed on separate btrfs subvolumes of the root
+          disk, and mounted correctly in the pre-boot initramfs. I
+          encrypted everything, including `/boot`, following the
+          always-updated steps on the Arch wiki.
+        p.
+          As usual, I spent hours tweaking things, reading docs,
+          investigating alternatives (should I use `iwd` instead of
+          `wpa_supplicant` and `dhcpcd`?) before installing the exact same
+          setup I have on my other computers. If it ain't broke...
+        h2 Nevermind, it's broke.
+        p.
+          My system didn't boot at first. As it turns out you actually
+          have to _follow_ instructions in order to attain the prescribed
+          result. After a few tries, a couple solid facepalms, and some
+          tweaks to my `/etc/default/grub` and `/etc/mkinitcpio.conf`
+          files, I had everything going smoothly. I downloaded some
+          wallpapers from `/r/earthporn`, used `feh` to fill my desktop
+          with beautiful scenes of nature, and there was nothing else. No
+          windows. No docks. No icons. Nothing. It was perfect.
+        p.
+          I built <a href="http://st.suckless.org/">st</a> from source,
+          summoned my terminal with a quick Super+Enter (courtesy of
+          <a href="https://github.com/baskerville/sxhkd">sxhkd</a>), and
+          started installing <a href="https://github.com/fluffywaffles/dotfiles">
+          my dot files</a> with Thoughtbot's delightful rc-file manager
+          tool, <a href="https://github.com/thoughtbot/rcm">rcm</a>. All
+          was going as planned. (Well, now that I could boot.)
+        p.
+          That wouldn't last.
+        aside.panel
+          h3 A Brief Aside On rcm vs. GNU stow
+          p.
+            I considered changing from rcm to GNU stow, since I had read
+            <a href="https://www.stevenrbaker.com/tech/managing-dotfiles-with-gnu-stow.html">
+            this blog post by steven baker</a>, but a very cursory
+            investigation revealed that rcm is smaller and more featureful
+            and has no dependencies. (I thought it depended on ruby, but
+            it does not!) Long live rcm!
+        h2 The Case of the Missing Locale
+        p.
+          My prompt was loading,
+          <a href="https://github.com/fluffywaffles/dotfiles/blob/master/local/zsh-functions/batpower.zsh">
+          batpower.zsh</a> was displaying my battery strength, everything
+          was hunky-dory. Except...
+        img.sink(src='https://via.placeholder.com/200x50?text=screenshot')
+        p.
+          It regularly happened that my cursor would render on top of my
+          prompt characters... And it regularly happened that
+          tab-completion caused huge redraw jumps, pushing text around in
+          eye-catching and confusing ways as if inserting tab characters
+          all over.
+        p.
+          So I considered an obscure possibility: is the tab character set
+          to the correct size? I investigated the `terminfo` entries for
+          `st`, and in fact they were wrong! I configure `st` to treat
+          tabs as 2 spaces wide in my `config.h`, but I failed to install
+          the st terminfo files in the correct places to make sure
+          `infocmp st-256color | grep it\#` was showing `it#2` (which is
+          apparently how `tic` formats the tabspaces option in its
+          plaintext format, which `infocmp` reconstructs [!!] from binary
+          terminfo files; it#N means tabs are interpreted as N spaces).
+        p.
+          While I felt validation for having found a bug and fixed it,
+          nothing changed. Perhaps my terminal was still to blame? I
+          installed and tested urxvt, but the same behavior persisted. It
+          was clearly something to do with my zshrc: the problem didn't
+          exist in bash!
+        p.
+          So the problem must be with zsh somehow. I chased that paricular
+          dragon as far as I could:
+        ul(style='margin-left: 50px')
+          li ? ...are color escape sequences breaking?
+          li ? ...is the `${RPROMPT}` getting drawn incorrectly?
+          li ? ...am I getting bitten by <a href="https://www.commandlinux.com/man-page/man1/zshparam.1.html">ZLE_RPROMPT_INDENT</a> somehow?
+          li ? ...could it be caused by the use of unicode characters?
+        p.
+          While it would take me a while to realize it, the problem _was_
+          in fact unicode! Just not unicode + zsh...
+        h3 It turns out /etc/locale.conf is important.
+        p.
+          It turned out that none of my `LANG` or `LC_*` variables was set
+          to anything, and so eventually somewhere in a maze of
+          filename-prioritized shell files it got defaulted to `C`. The
+          `C` locale is the "minimal environment for C translation." In
+          other words, it's not a locale for human language... it's a
+          locale that makes all text behave like it was written in a C
+          program. It's part of
+          <a href="https://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap07.html#tag_07_02">
+          POSIX</a> in fact, so today I learned something new. `zsh` and
+          `st` were therefore treating every character as a byte...
+          including unicode multibyte characters, like the characters ▌ƒ▐
+          at the start of my `${PROMPT}`. When those characters were all
+          treated as 1 byte in size, the cursor would get confused. Even
+          worse, when zsh completion began, everything would get thrown
+          into utter disarray all over again! Apparently since fontconfig
+          had a mapping for all the multibyte characters, it would display
+          them correctly — but then the logic in the terminal code for
+          spacing things out would miscount them by going byte-by-byte.
+        p.
+          I set my `/etc/locale.conf` to specify `LANG=en_US.UTF-8` and
+          voilá! now everything is in its proper place, and characters
+          have width again.
+        h2 The Case of Kernel Attribute Policy Error -22
+        p.
+          Now we have a new problem: WiFi.
+        p.
+          Networking is everyone's favorite reason to hate Linux. It's
+          also the operating system the majority of internet-connected
+          computers are running. (Servers, mostly.) It figures.
+        p.
+          I've never had issues, though. Sure, when I was using
+          NetworkManager on Ubuntu in the Bad Old Days before I started
+          learning to understand and use my computer at a deeper level —
+          yeah, I had problems back then. But Not since switching to Arch
+          Linux. So this was new.
+        p.
+          I use `wpa_supplicant` and `dhcpcd` to connect my WiFi card to
+          networks, and to negotiate an IP address, respectively. People
+          who use GUIs click on things, I suppose. I type things. Or even
+          <a href="https://github.com/fluffywaffles/dotfiles/blob/master/%40/connect">
+          script</a> things.
+        p.
+          Now thanks to the fact that I run commands myself, instead of
+          through a GUI that might not bother capturing logs, I could see
+          that `wpa_supplicant` was now erroring out with a mysterious
+          message seemingly originating in the Linux Kernel:
+        section.panel
+          pre.
+            nl80211: kernel reports: Attribute failed policy validation
+            Failed to create interface p2p-dev-wlp0s20f3 -22 (Invalid argument)
+        p.
+          Thus begins a fascinating saga: a story of "predictable network
+          names," unexpected kernel size limits, the curious maintainers
+          of wpa_supplicant, and a glimpse into Intel's big-ass ego. Oh,
+          and then we try to fix it in udev. Which... oof.
+        p.
+          So first: where does the error come from?
+          It turns out that the Linux Kernel configures a size limit on
+          the names of network interfaces, `IF_NAMESIZE`. By default, that
+          limit is 15. When wpa_supplicant sets up an interface, it
+          creates a virtual "p2p" device (which is somehow related to WiFi
+          Direct, which is an ages-old WiFi standard from the 2000s), and
+          when it _creates_ that "p2p" device, it prefixes the interface
+          name with `p2p-dev-`. Now this new device is exceeding 15
+          characters (although it never did, and still does not, cause any
+          problems with my other computers), which is triggering policy
+          validation errors in the Kernel's networking code, which is
+          bubbling up to us as error code -22.
+        p.
+          You can find some scattered discussion of the problem in the
+          now-archived (?) repository
+          <a href="https://github.com/benzea/gnome-network-displays/issues/70">
+          "gnome-network-displays" issue #70</a>.
+        p.
+          Whew.
+        p.
+          So what the heck happened?
+        p.
+          Systemd happened. (Boooo!) Among its myriad of responsibilities,
+          systemd includes udev, which is the magical daemon responsible
+          for detecting, naming, and creating sysfs and /dev/ entries to
+          expose your hardware as a collection of files and folders you
+          can manipulate. If you've ever referred to your hard drive as
+          `/dev/sda`, you have udev to thank for naming it that. (If you
+          always refer to your disks by UUID, I have nothing to say to
+          you.)
+        p.
+          Long ago, systemd introduced rules to rename network interfaces
+          from their ancient and simple names, like eth0 and wlan0, to
+          "predictable" names based on what bus (pci, usb), what slot of
+          that bus, and whatever else would unambiguously locate the
+          device within the complex and uninteresting geography of your
+          computer. When this happened, `wlan0` became `wlp2s0` (so called
+          because the device is a wireless link, wl, installed on pci bus
+          2, p2, slot 0, s0). See the aptly-named freedesktop page,
+          <a href="https://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/">
+          "Predictable Network Interface Names"</a>. Don't ask me why
+          everything bad always points to freedesktop. They're all in
+          cahoots.
+        p.
+          Anyway, it appears that recently systemd is at it again. Now,
+          network device interfaces are named with even more "predictable"
+          data, resulting in longer unambiguous names like `wlp0s20f3`,
+          which obviously stands for... uh... pci bus 0, slot
+          who-in-heck-knows. Right? Sure. If you really want, you can try
+          to parse the very informative (I assume?) official
+          <a href="https://www.freedesktop.org/software/systemd/man/systemd.net-naming-scheme.html">
+          systemd man-pages</a>.
+        p.
+          Now it's time for our "a-ha!" moment! If systemd made network
+          interface names longer, and `wpa_supplicant` adds a new device
+          with a long prefix on top of that name, then suddenly those
+          names are too long for the kernel!
+        p.
+          So... Wait. Now what? We can't just patch the kernel... right?
+          Are we really going to go that far down the rabbit hole?
+        p.
+          Well, it turns out you can do some "bad" things, like tell the
+          kernel "just use the old names," and then your wireless cards
+          will regain their ancient names of lore: wlan0, wlan1, eth0...
+          But now you're mucking with your kernel parameters. Do you
+          really want to be held responsible for that? Yikes.
+        p.
+          But you can set `net.ifnames=0` to your kernel parameters to
+          revert back to the wlan0 days. If you are unafraid.
+        p.
+          Me, however: I saw a great opportunity here for a time-consuming
+          boondoggle! Surely it's possible to create an alias for an
+          interface, right? I bet trusty ol' iproute2 has a functionality
+          for this, buried somewhere in the subcommands for `ip-link`.
+        p.
+          It turns out, the answer is... iproute2 sort-of supports
+          aliases. There's a newish-ly announced feature, "altname," which
+          was shared on LWN (the linux news network):
+          <a href="https://lwn.net/Articles/794289/">here</a>. Of course,
+          like anyone debugging a problem, I found it linked from
+          <a href="https://unix.stackexchange.com/questions/391535/how-to-add-an-alternative-name-for-the-interface/569105#569105">
+          StackExchange</a>. (This StackExchange question also helpfully
+          links to the apparently deprecated `ip link alias` feature, that
+          doesn't seem to exist on my machine. So... YMMV.)
+        p.
+          ... Except altname isn't fully-supported yet. `dhcpcd`, for
+          example, doesn't know how to find a network interface by its
+          altname. Besides, the feature doesn't appear to be super
+          stable. The syntax in the LWN article is out-of-date, for one;
+          for another, it seems the new syntax implies a larger future
+          refactor of iproute2 (and perhaps even of the kernel) for
+          classifying some link features as "properties."
+        p.
+          So maybe altname isn't our salvation. But it's usable for now,
+          if we use the altname as the argument to `wpa_supplicant`, and
+          the lengthy-but-"predictable" name as the argument to `dhcpcd`.
+          So at that point, I called it a day; let the saga continue
+          tomorrow.
+        h2 The Case of Kernel Attribute Policy Error -22 (II)
+        p.
+          So what's this about Intel's ego?
+        p.
+          Well, naturally I asked myself at some point if I shouldn't just
+          replace `wpa_supplicant`. Apparently `iwd` is the new hotness
+          these days, and all the kids love it because it "remembers"
+          things and takes care of stray kittens. For a pretty
+          aggressively-reported overview of `iwd`, look no further than
+          the co-creator of LWN himself,
+          <a href="https://lwn.net/Articles/770991/">
+          Jonathan Corbet, iwd: simplifying WiFi management</a>.
+        p.
+          The article is very down on `wpa_supplicant`, but mostly it
+          turns out for reasons I don't care about. Supposedly
+          `wpa_supplicant` has all the features you could ask for, but it
+          doesn't play nicely with `NetworkManager` and `ConnMan`. It
+          should be noted, however, that `NetworkManager` has a history of
+          not playing nicely with anyone either... though I literally
+          don't know anything about ConnMan. Just that the name sounds
+          suspicious... Watch your wallet. Don't agree to buy any band
+          equipment.
+        p.
+          Anyway, Intel does have a bit of a massive ego here: they're
+          just going to waltz in and... fix everything in the Kernel,
+          aren't they?
+        p.
+          Except hilariously `iwd` breaks network interface naming too,
+          which is exactly the problem I came here to solve. Apparently
+          the "fix" in post-1.0 versions of `iwd` is to just...
+          <a href="https://wiki.archlinux.org/index.php/Iwd#Wireless_device_is_not_renamed_by_udev">
+          disable the "predictable" naming scheme</a>, at least on Arch
+          Linux. I'm sure that will work out.
+        p.
+          TO BE FINISSSHED
