@@ -1,6 +1,6 @@
 include /blog-mixins
 
-+page('log: index')
++page('log')
   main
     header
       +nav()(index, horizontal)
@@ -8,6 +8,8 @@ include /blog-mixins
     section#content
       ul
         li
-          a(href='./20191009.html') 2019-10-09: untitled poem
+          a(href='./20191009.html').
+            2019-10-09: untitled poem
         li
-          a(href='./20191005.html') 2019-10-05: $15 boba
+          a(href='./20191005.html').
+            2019-10-05: $15 boba
