@@ -76,9 +76,9 @@ include /blog-mixins
           | reader.
         p
           | With all these uses and formats, it begs the question: why is
-          | there so much metadata? Is there some meaningful way to
-          | classify metadata? Can we come up with some useful, abstract
-          | way of representing it?
+          | there so much metadata? Is it really all different? Is there
+          | some meaningful way to classify metadata? Can we come up with
+          | some useful, abstract way of representing it?
         p
           | Or will we just end up in a more meta mess than we're already
           | in?
@@ -175,7 +175,7 @@ include /blog-mixins
               dt names:
               dd.
                 there's a whole hierarchy, see the
-                #[a(href="https://schema.org/docs/full.html") schema.org docs]
+                #[a.traditional(href="https://schema.org/docs/full.html") schema.org docs]
               dt relations:
               dd URLs, usually, to more JSON-LD annotated documents
               dd ... and, of course, the structure of the name hierarchy
@@ -219,11 +219,12 @@ include /blog-mixins
           | reading the surrounding code. (Macros are metadata: they
           | aren't the content, they describe the content. Even complex
           | macros that behave like functions still merely describe
-          | content, they are not it.) Finally, runtime metadata is
-          | processed after the code is read, and it can alter the
-          | behavior of the code while it is executing - for example,
-          | annotations or decorators may attach two pieces of code
-          | together at runtime that are otherwise unrelated.
+          | content, by way of rules for generating it - they are not it.)
+          | Finally, runtime metadata is processed after the code is read,
+          | and it can alter the behavior of the code while it is
+          | executing - for example, annotations or decorators may attach
+          | two pieces of code together at runtime that are otherwise
+          | unrelated.
         h3 A Search Engine
         p
           | In the example of a search engine parsing "rich result"
@@ -278,10 +279,9 @@ include /blog-mixins
         p
           | Notice anything in common among all these examples?
         p
-          | Metadata doesn't state its audience, and no metadata that
-          | distinguishes syntactically between metadata intended to
-          | "process before," "during," and "after" the content it
-          | describes.
+          | Metadata doesn't state its audience, and no metadata
+          | distinguishes syntactically between stages: does it "process
+          | before," "during," or "after" the content it describes?
         p
           | Consider that
           |

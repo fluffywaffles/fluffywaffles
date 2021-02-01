@@ -82,11 +82,6 @@ header
     padding-bottom 0.75em
     padding-left content-left-space
     background #2c323c
-    &.main-title
-      font-family mono-font-family
-      font-size mono-font-size
-      padding-top 10px
-      padding-bottom 10px
   & + section
     margin-top 2em
 
@@ -175,7 +170,7 @@ iframe.code
   width 100%
   height 650px
   background body-background-color
-  border-width 50px 20px
+  border-width 50px 30px
   border-style solid
   border-color highlight-background-color
 
@@ -192,10 +187,14 @@ iframe.code
     padding-left 20px
     list-style-type disc
 
-figure
+img
+  width 100%
+
+.sink
   margin 1em 0
-  & > img.sink
-    margin 0
+  border 20px solid highlight-background-color
+
+figure
   & + figcaption
     margin-top -1em
     padding-bottom 1em
@@ -204,45 +203,6 @@ figcaption
   text-align center
   font-style italic
   background highlight-background-color
-
-img.sink
-  margin 1em 0
-  width 100%
-  border 20px solid highlight-background-color
-
-header > h1.main-title
-  font-size mono-h1-font-size
-  position relative
-
-  &:before
-    content ''
-    overflow hidden
-    position absolute
-    font-size @font-size
-    top 0
-    left 0
-    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
-      content-max-width mono-h1-character-width
-    )
-    height 100%
-    background #50545a
-    @media all and (max-width: content-max-width)
-      width 40px - (1.5 * mono-h1-character-width)
-
-  &::after
-    content ''
-    width mono-h1-character-width
-    height 100%
-    display block
-    background white
-    animation blink 0.8s infinite alternate
-    position absolute
-    top 0
-    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
-      content-max-width fluffywaffles-characters mono-h1-character-width
-    )
-    @media all and (max-width: content-max-width)
-      left 40px + (fluffywaffles-characters + 1.5) * mono-h1-character-width
 
 // NOTE(jordan): only supports sublists 1 level deep
 ul.collapsible-tree
@@ -319,40 +279,48 @@ ul.collapsible-tree
     background-size contain
     background-repeat no-repeat
     position relative
-    z-index 2
+    z-index 1
     height logo-height
 
   svg.drip-animation
     width 100%
     height logo-height
     position absolute
-    z-index 1
+    z-index 0
     left logo-drip-offset-x
     top logo-height - logo-drip-offset-y
 
 body.index
   header
     padding-top 50px
-    .fluffywaffles-logo
-      left "calc(50% - %s)" % (logo-width / 2)
 
-  header > h1.main-title::before
-    width "calc(50% - (%s / 2) - 1.5 * %s)" % (
-      index-content-max-width mono-h1-character-width
-    )
-
-  header > h1.main-title::after
-    left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
-      index-content-max-width fluffywaffles-characters mono-h1-character-width
-    )
+  header > .fluffywaffles-logo
+    left "calc(50% - %s)" % (logo-width / 2)
 
   header > h1
+    font-size mono-h1-font-size
+    font-family mono-font-family
+    position relative
+    padding-top 10px
+    padding-bottom 10px
     padding-left index-content-left-space
+    &::after
+      content ''
+      width mono-h1-character-width
+      height 100%
+      display block
+      background white
+      animation blink 0.8s infinite alternate
+      position absolute
+      top 0
+      left "calc(50% - %s / 2 + (%s + 1.5) * %s)" % (
+        index-content-max-width fluffywaffles-characters mono-h1-character-width
+      )
+      @media all and (max-width: content-max-width)
+        left 40px + (fluffywaffles-characters + 1.5) * mono-h1-character-width
 
   section
     max-width index-content-max-width
-
-  section
     margin-left index-content-left-space
 
 breakpoint = content-max-width + 40px
