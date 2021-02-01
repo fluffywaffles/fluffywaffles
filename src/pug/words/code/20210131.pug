@@ -1,0 +1,283 @@
+include /blog-mixins
+
++page('code: 2021-01-31: Metadata, Markup, Sigils and Tags, oh my!')
+  main
+    header
+      +nav()(index, horizontal)
+      h1 Metadata, Markup, Sigils and Tags, oh my!
+    section#content
+      section
+        p
+          a(href="https://medium.com/@HeathEvans/content-is-king-essay-by-bill-gates-1996-df74552f80d9").
+            Content may be king
+          | , but metadata is everywhere. More often than not, it's right
+          | on top of the content, invisible to anyone but she who clicks
+          | "view source". For example:
+          li.
+            semantic or presentational metadata - broadly, "markup" (HTML)
+          li.
+            preprocessor or compiler directives - C #include, Rust \#[cfg]
+          li.
+            configuration - [toml], .. rst, --- # yaml, { "type": "json" }
+          li.
+            names and places - for example, this document is 20210131.html
+          li.
+            decorators or annotations - as in @java, @python, @typescript
+          li.
+            tags and groupings - twitter #hashtags, wordpress taxonomies
+        p
+          | We haven't even gotten into metadata targeted at SEO, Social
+          | Media, and other forms of content annotation:
+          li
+            a(href="https://www.w3.org/TR/microdata/") microdata
+            |
+            | (from the W3C)
+          li
+            a(href="https://rdfa.info/") RDFa
+            |
+            | (probably Tim Berners-Lee)
+          li
+            a(href="https://json-ld.org/") JSON-LD
+            |
+            | (Google-endorsed, but basically W3C)
+          li
+            a(href="https://developers.facebook.com/docs/sharing/webmasters") "OpenGraph"
+            |
+            | (Facebook)
+          li
+            a(href="http://microformats.org/wiki/about") Microformats
+            |
+            | (I'm not sure even #[i they] know whose idea this is)
+        p
+          | And there's metadata that affects the visible result:
+          li
+            | <dfn title="flavor!">flavor text*</dfn>
+            |
+            | (ie.
+            code: i= ' <dfn title="flavor!">flavor text*</dfn>'
+            | )
+          li
+            abbr(title="abbreviations") abbr
+            |
+            | (ie.
+            code: i= ' <abbr title="abbreviation">abbr</abbr>'
+            | )
+          li
+            a(href="#") link
+            |
+            | (ie.
+            code: i= ' <a href="#">link</a>'
+            | )
+        p
+          | All metadata is intended to influence the behavior of
+          | _something_, whether it's the DOM renderer, the compiler, your
+          | text editor, your web server, your python `class`, or an
+          | algorithm &mdash; or even the user, who is in our case the
+          | reader.
+        p
+          | With all these uses and formats, it begs the question: why is
+          | there so much metadata? Is there some meaningful way to
+          | classify metadata? Can we come up with some useful, abstract
+          | way of representing it?
+        p
+          | Or will we just end up in a more meta mess than we're already
+          | in?
+        p
+          | Probably! But let's try anyway.
+      section
+        h2 What's in a Name?
+        p
+          | Much of the job of metadata is naming things. "Name this image
+          | in a search result." "Name this article with this title."
+          | "Name the date of this document's creation." Even defining a
+          | name is naming something if you look at it in reverse: "name
+          | this definition."
+      section
+        h2 How do you Find it?
+        p
+          | Once things are named, the big remaining job of metadata is
+          | relating things together. This is partly done by names
+          | already: "Name this a 'pet'" helps establish a grouping of
+          | things named 'pet.'
+        p
+          | But a relationship might not be denominative. It might be
+          | statistical, such as: "things named 'pet' are often named
+          | 'Fido' as well". It can be logical, such as: "a 'cat' is a
+          | 'pet', but a 'pet' may not be a 'cat'". It might be
+          | accidental, such as: "'pet' sorts close to 'picture'".
+          | Relationships are sometimes meaningful and sometimes not, but
+          | their existence changes a name from a simple label into an
+          | identity.
+        p
+          | Relating names together implies meaning.
+      section
+        h2 What does it Mean?
+        p
+          | Finally, metadata can self-describe. Saying that 'pet' is a
+          | 'category' affects our interpretation of the name: it's a name
+          | that groups together alike things into a category.
+        p
+          | In a sense, 'category' is itself metadata of 'pet' which may
+          | then relate to metadata of 'type' which is itself metadata of
+          | 'cat' which may itself be metadata of... well, as Kurt
+          | Vonnegut says, "and so on."
+        p
+          | Practically, we can simply look at long strings of names,
+          | relations, and self-desribing metadata as one piece of
+          | metadata all together. So our example may look like
+          | `category=pet`. We can join together the pieces with '&'
+          | characters, and now we've derived the syntax of
+          |
+          a(href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST").
+            url-encoded form data:
+          |
+          | `category=pet&type=cat&so_on=...`.
+        p
+          | So what does it mean? Often, nothing. Not to us, anyway. While
+          | saying "pet" is the "category" and "cat" is the "type" might
+          | be more informative than just saying "pet&cat," we still don't
+          | know that "category" or "type" means. Metadata may try to
+          | describe itself, but ultimately it still has to be
+          | interpreted.
+        p
+          | In other words: all metadata has an _audience_.
+        p
+          | Data's ability to self-describe is limited. Metadata's ability
+          | to describe that data is still limited. Metadata's ability to
+          | describe itself describing that data is limited yet still...
+          | And so on. You can't solve the problem by adding more.
+        p
+          | Just as an image means nothing until viewed with an
+          | appropriate program, its metadata means nothing until
+          | interpreted by an approriate audience.
+      section
+        h2 All Together Now
+        p
+          | Metadata is a name, a relation, or a description of a name or
+          | relation, designed to have meaning when interpreted by some
+          | specific audience.
+        p
+          | So for example: JSON-LD allows you to name and relate together
+          | documents, images, and other things on the internet, so that
+          | Google can interpret them and display better search results.
+          | In the case of JSON-LD, there's a shared vocabulary at
+          | #[a(href="https://schema.org/docs/schemas.html") schema.org]
+          | for establishing what special self-describing metadata (like
+          | "@type") is supposed to mean to the machines that read JSON-LD
+          | metadata (like Google's bots).
+        p
+          | To summarize:
+        dl.compact.panel
+          dt JSON-LD with schema.org
+          dd: dl.compact
+              dt audience:
+              dd Google (and perhaps others)
+              dt names:
+              dd.
+                there's a whole hierarchy, see the
+                #[a(href="https://schema.org/docs/full.html") schema.org docs]
+              dt relations:
+              dd URLs, usually, to more JSON-LD annotated documents
+              dd ... and, of course, the structure of the name hierarchy
+              dt self-describing properties:
+              dd "@type", among others
+        p
+          | A similar argument applies to configuration, like yaml, and to
+          | programming language directives, like #include in C. There's
+          | some kind of schema (or spec) describing how they're supposed
+          | to be interpreted, and the intended audience (the parser or
+          | the compiler) figures out what to do according to the schema.
+      section
+        h2 Thank You, Thank You, You've been a Great Audience
+        p
+          | It's clear by now that metadata always falls into a similar
+          | structure. You group together names and relationships with
+          | self-describing fields (like "@type" in JSON-LD).
+        p
+          | What's still interesting is the audience. I think most
+          | audiences are similar. They interpret metadata in one of a few
+          | ways:
+          li before reading content,
+          li while reading content,
+          li and after reading content, while interpreting it.
+        h3 A Programming Language
+        p
+          | In a programming language, each of the compiler, parser, and
+          | runtime neatly fits exactly one of these cases:
+          li compiler metadata is processed before reading content
+          li parser metadata is processed while reading content
+          li runtime metadata is processed after the content is read.
+        p
+          | Compiler metadata might affect the compilation target: x86 vs.
+          | ARM, for example. Parser metadata is interpreted by the parser
+          | - for example, macros: they're instructions to be interpreted
+          | by the parser while reading the surrounding code. Finally,
+          | runtime metadata is processed after the code is read, and it
+          | can alter the behavior of the code while it is executing - for
+          | example, annotations or decorators may attach two pieces of
+          | code together at runtime that are otherwise unrelated.
+        h3 A Search Engine
+        p
+          | In the example of a search engine parsing "rich result"
+          | metadata:
+          li the schema is processed before reading content
+          li annotations like "@type" are processed while reading content
+          li links and relations are processed after reading content.
+        p
+          | A schema tells the search engine how to read the JSON-LD
+          | metadata before the content is read, a "@type" field can
+          | affect how the metadata is parsed _while_ it is read, and
+          | links can affect at runtime how the search engine crawler
+          | decides what pages to index next, what images to display in a
+          | result card, et cetera.
+        h3 Markup
+        p
+          | Let's do one more. In the example of HTML:
+          li
+            = '`<!doctype>` and `<meta>`'
+            |
+            | are processed before reading content
+          li tags and attributes are processed while reading content
+          li
+            = '`<style>`s '
+            | are processed after reading content
+        p
+          = '`<!doctype>` and `<meta>`'
+          |
+          | can affect how a document is supposed to be parsed before
+          | it is read. Tags and attributes (like
+          |
+          = '`<a href>` and `<input type>`'
+          | ) change or augment content while it is read.
+          |
+          = '`<style>`s'
+          |
+          | change the behavior and appearance of content after it has
+          | been read.
+      section
+        h2 A Lacking Distinction
+        p
+          | Notice anything in common among all these examples?
+        p
+          | There's no metadata that states its audience, and no metadata
+          | that distinguishes syntactically between metadata intended to
+          | "process before," "during," and "after" the content it
+          | describes.
+        p
+          | What if it described both?
+        p
+          | Consider that
+          |
+          = '`<meta>` and `<style>` and `<input>`'
+          |
+          | all look the same. It is up to you to understand that "meta"
+          | might affect how content should be read, that "input" can
+          | change content inside of it from inline text to a special form
+          | element, and that "style" tags are going to change how content
+          | is rendered at runtime after it is read.
+        p
+          | JSON-LD documents prefix special property keys with "@". While
+          | this indicates that "@type" is not part of the document, it
+          | doesn't tell you when "@type" has meaning or to what audience.
+        p
+          | TO BE FINISSHED
