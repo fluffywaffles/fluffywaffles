@@ -192,14 +192,19 @@ include /blog-mixins
         p
           | It's clear by now that metadata always falls into a similar
           | structure. You group together names and relationships with
-          | self-describing fields (like "@type" in JSON-LD).
+          | self-describing fields.
         p
           | What's still interesting is the audience. I think most
-          | audiences are similar. They interpret metadata in one of a few
-          | ways:
+          | audiences are similar. By that I mean: most audiences are
+          | identifiable by the stage in content-processing at which they
+          | are interested in metadata. These stages are:
           li before reading content,
           li while reading content,
           li and after reading content, while interpreting it.
+        p
+          | Let's give a few examples of content, its metadata, and the
+          | audiences that read the metadata at varying stages during
+          | content processing.
         h3 A Programming Language
         p
           | In a programming language, each of the compiler, parser, and
@@ -210,12 +215,15 @@ include /blog-mixins
         p
           | Compiler metadata might affect the compilation target: x86 vs.
           | ARM, for example. Parser metadata is interpreted by the parser
-          | - for example, macros: they're instructions to be interpreted
-          | by the parser while reading the surrounding code. Finally,
-          | runtime metadata is processed after the code is read, and it
-          | can alter the behavior of the code while it is executing - for
-          | example, annotations or decorators may attach two pieces of
-          | code together at runtime that are otherwise unrelated.
+          | - for example, macros: they're expanded by the parser while
+          | reading the surrounding code. (Macros are metadata: they
+          | aren't the content, they describe the content. Even complex
+          | macros that behave like functions still merely describe
+          | content, they are not it.) Finally, runtime metadata is
+          | processed after the code is read, and it can alter the
+          | behavior of the code while it is executing - for example,
+          | annotations or decorators may attach two pieces of code
+          | together at runtime that are otherwise unrelated.
         h3 A Search Engine
         p
           | In the example of a search engine parsing "rich result"
@@ -254,30 +262,92 @@ include /blog-mixins
           |
           | change the behavior and appearance of content after it has
           | been read.
+        p
+          | Not to confound things even further, but JSON-LD is intended
+          | to be embedded within HTML inside of
+          |
+          = '`<script>`'
+          |
+          | tags &mdash; despite JSON-LD not being a script!
+        p
+          | So HTML itself has metadata, and then embeds more metadata
+          | still, which may have its own audiences, and be processed
+          | during its own stages... "And so on," as Vonnegut says.
       section
         h2 A Lacking Distinction
         p
           | Notice anything in common among all these examples?
         p
-          | There's no metadata that states its audience, and no metadata
-          | that distinguishes syntactically between metadata intended to
+          | Metadata doesn't state its audience, and no metadata that
+          | distinguishes syntactically between metadata intended to
           | "process before," "during," and "after" the content it
           | describes.
-        p
-          | What if it described both?
         p
           | Consider that
           |
           = '`<meta>` and `<style>` and `<input>`'
           |
           | all look the same. It is up to you to understand that "meta"
-          | might affect how content should be read, that "input" can
-          | change content inside of it from inline text to a special form
-          | element, and that "style" tags are going to change how content
-          | is rendered at runtime after it is read.
+          | is processed before the rest of content and may affect how it
+          | is read, that "input" can change content inside of it from
+          | inline text to a special form element while it is read, and
+          | that "style" tags are going to change how content is rendered
+          | at runtime _after_ it is read.
         p
-          | JSON-LD documents prefix special property keys with "@". While
-          | this indicates that "@type" is not part of the document, it
-          | doesn't tell you when "@type" has meaning or to what audience.
+          | Consider JSON-LD: it uses a prefix, "@", to denote special
+          | property keys like "@type". While this indicates that "@type"
+          | is not part of the document, it doesn't tell you when "@type"
+          | has meaning or to what audience.
+      section
+        h2 Pick your Audience, Pick your Stage
         p
-          | TO BE FINISSHED
+          | What if metadata _did_ name its audience, and clearly
+          | indicated the stage of content-processing to which it applied?
+        p
+          | HTML was designed to embed other documents, so it tends to
+          | come closest to accomplishing this goal. At the very least,
+          | for instance, JSON-LD
+          |
+          = '`<script>`'
+          |
+          | tags have a special JSON-LD `"type"` attribute. Yet this is
+          | actually _more_ metadata, metadata of the
+          |
+          = '`<script>`'
+          |
+          | tag, and not at all a declaration of the audience. It also
+          | doesn't indicate at what stage of content-processing the
+          | metadata has meaning.
+        p
+          | HTML is complicated because it is intended for many audiences:
+          | it's intended for human consumption and authorship, it's
+          | intended to be processed by machines like Google's search
+          | indexer, and it's intended to embed media like images and
+          | video, not to mention entire other documents like JSON-LD,
+          | JavaScript, CSS, and... well, and so on. Every type of
+          | embedded content may have its own metadata intended for its
+          | own audiences.
+        p
+          | So... what if metadata named its audience and its stage?
+        h3 Tools would be easier to write.
+        p
+          | Point point point.
+        h3 Annotated content would be easier for humans to read.
+        p
+          | Points points points. Making them.
+        h3 More metadata would add less complexity.
+        p
+          | Points about moarness. Very pointy.
+        h3 Metadata can be kept from unintended audiences.
+        p
+          | Wow, security maybe? Oh no but definitely smaller files. WowW.
+        h3 Audience opt-in could make content more dynamic.
+        p
+          | On the internet nobody knows you're a dog
+        h3 Complex programs would be easier to reason about.
+        p
+          | Does this run at compile-time or... elsewise-time?
+      section.panel
+        h2 Parting Words
+        p
+          | In conclusion, Pudgy for President 2024.
