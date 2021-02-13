@@ -71,8 +71,9 @@ section
   margin-bottom 3em
   p
     margin 1.5em 0
-    &:first-letter
-      margin-left 2em
+    &::before
+      content: ''
+      margin-left: 2em
 
 header
   background header-background-color
