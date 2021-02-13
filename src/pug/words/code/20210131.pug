@@ -4,94 +4,139 @@ include /blog-mixins
   main
     header
       +nav()(index, horizontal)
-      h1 Metadata, Markup, Sigils and Tags, oh my!
+      h1 Ramblings on Metadata
     section#content
       section
         p
-          a(href="https://medium.com/@HeathEvans/content-is-king-essay-by-bill-gates-1996-df74552f80d9").
-            Content may be king
-          | , but metadata is everywhere. More often than not, it's right
-          | on top of the content, invisible to anyone but she who clicks
-          | "view source". For example:
+          | All modern content, from text to source code to images to
+          | webpages to videos and games, is rich with metadata that
+          | enhances it. Often, metadata lives right on top of content,
+          | invisible to anyone but she who clicks "view source". For
+          | example:
           li.
             semantic or presentational metadata - broadly, "markup" (HTML)
           li.
+            presentational metadata - color palettes, stylesheets (CSS)
+          li.
+            file metadata - name, path, extension (.html), modified-time
+          li.
             preprocessor or compiler directives - C #include, Rust \#[cfg]
           li.
-            configuration - [toml], .. rst, --- # yaml, { "type": "json" }
-          li.
-            names and places - for example, this document is 20210131.html
+            configuration - [toml], .. rst, --- # yaml, "json"
           li.
             decorators or annotations - as in @java, @python, @typescript
           li.
             tags and groupings - twitter #hashtags, wordpress taxonomies
         p
-          | We haven't even gotten into metadata targeted at SEO, Social
-          | Media, and other forms of content annotation:
+          | Even just for organizing webpages there's a jungle of metadata
+          | called the "semantic web," designed primarily for search
+          | engines and social media:
           li
-            a(href="https://www.w3.org/TR/microdata/") microdata
+            a(href="https://rdfa.info/")
+              abbr(title="resource description framework in attributes")
+                | RDFa
             |
             | (from the W3C)
           li
-            a(href="https://rdfa.info/") RDFa
-            |
-            | (probably Tim Berners-Lee)
-          li
             a(href="https://json-ld.org/") JSON-LD
             |
-            | (Google-endorsed, but basically W3C)
+            | (Google-endorsed, but W3C)
           li
-            a(href="https://developers.facebook.com/docs/sharing/webmasters") "OpenGraph"
+            a(href="https://developers.facebook.com/docs/sharing/webmasters").
+              OpenGraph
             |
             | (Facebook)
           li
             a(href="http://microformats.org/wiki/about") Microformats
             |
-            | (I'm not sure even #[i they] know whose idea this is)
+            | (an evolution of W3C
+            | #[a(href="https://www.w3.org/TR/microdata/") microdata]?)
         p
-          | And there's metadata that affects the visible result:
+          | And even narrowing our scope to consider just metadata on this
+          | page, the variety is incredible:
+          li
+            a(href="/styles/main.css")
+              abbr(title="cascading style sheets") css
+            |
+            | for describing appearance (colors, fonts, formatting...)
           li
             | <dfn title="flavor!">flavor text*</dfn>
             |
-            | (ie.
+            | (see:
             code: i= ' <dfn title="flavor!">flavor text*</dfn>'
             | )
           li
-            abbr(title="abbreviations") abbr
+            abbr(title="abbreviations") abbrs
             |
-            | (ie.
-            code: i= ' <abbr title="abbreviation">abbr</abbr>'
+            | (see:
+            code: i= ' <abbr title="abbreviations">abbr</abbr>'
             | )
           li
-            a(href="#") link
+            a(href="#") links
             |
-            | (ie.
+            | (see:
             code: i= ' <a href="#">link</a>'
             | )
         p
-          | All metadata is intended to influence the behavior of
-          | _something_, whether it's the DOM renderer, the compiler, your
-          | text editor, your web server, your python `class`, or an
-          | algorithm &mdash; or even the user, who is in our case the
-          | reader.
+          | We have not even begun to discuss metadata targeted at:
+          li #[a(href="https://developer.mozilla.org/en-US/docs/Learn/Accessibility/WAI-ARIA_basics") accessibility] like for the vision-impaired,
+          li #[a(href="https://www.w3.org/International/questions/qa-html-language-declarations") languages]  like alphabets vs. ideographs,
+          li #[a(href="https://developer.mozilla.org/en-US/docs/Web/CSS/@media") media] like phones vs. TVs,
         p
-          | With all these uses and formats, it begs the question: why is
-          | there so much metadata? Is it really all different? Is there
-          | some meaningful way to classify metadata? Can we come up with
-          | some useful, abstract way of representing it?
+          | and so much more: security, compression, tracing... and that's
+          | still just considering a single webpage.
         p
-          | Or will we just end up in a more meta mess than we're already
-          | in?
+          | If the focus of content is the _message_ (the image, the
+          | video, the text, the gameplay), then metadata is every little
+          | knob that adjusts, manipulates, and expands that focus to
+          | enhance the experience.
         p
-          | Probably! But let's try anyway.
+          | This post is an exploration into what we can learn from all
+          | this metadata; an exploration into how we can classify and
+          | understand metadata, despite its bewildering diversity.
+        p
+          | At the end, we hope to arrive at a useful framework for
+          | analyzing and understanding metadata that better enables us to
+          | write it, use it, and understand it.
+        p
+          | I will note that I'm intentionally considering markup
+          | as a form of metadata. I imagine there might be folks who
+          | would argue with that; but given we define metadata as
+          | "everything in addition to the data" (ie the content), it
+          | should seem fair to consider markup part of the broader
+          | category: it is not the content, although it serves to enhance
+          | the content and alter its presentation. Things can get murky
+          | (if we say javascript is metadata, but then we dynamically
+          | load the content that we display, as in a SPA, for example)
+          | but we'll avoid that large rat's nest and instead focus on the
+          | most prevalent use of javascript, which is to make content
+          | interactive; in other words, another way of enhancing it.
+      section
+        h2 What does Metadata Do?
+        p
+          | Metadata enhances content to influence behavior, whether of a
+          | web browser, a file explorer, a compiler, a text editor, a web
+          | server, a python `class`, or an algorithm — or even the user,
+          | who is in our case the reader.
+        p
+          | Metadata comes in an endless variety of formats and purposes,
+          | ranging from mundane (file names) to arcane ("semantics"). Its
+          | scope is broad because it is defined largely by what it is
+          | not; that is, everything other than the content it enhances.
+          | Anything in addition to the content, but which is not the
+          | content — not the text, the images, the source code, et cetera
+          | — is metadata.
+        p
+          | So... that's a lot.
       section
         h2 What's in a Name?
         p
-          | Much of the job of metadata is naming things. "Name this image
-          | in a search result." "Name this article with this title."
-          | "Name the date of this document's creation." Even defining a
-          | name is naming something if you look at it in reverse: "name
-          | this definition."
+          | Much of the job of metadata is naming things. Obviously, file
+          | names; but actually a lot of content-description is really
+          | about names. "Name this image in a search result." "Name this
+          | article with this title." "Name the date of this document's
+          | creation." Even defining a name is naming something if you
+          | look at it in reverse: "name this definition."
       section
         h2 How do you Find it?
         p
@@ -117,10 +162,15 @@ include /blog-mixins
           | 'category' affects our interpretation of the name: it's a name
           | that groups together alike things into a category.
         p
-          | In a sense, 'category' is itself metadata of 'pet' which may
-          | then relate to metadata of 'type' which is itself metadata of
-          | 'cat' which may itself be metadata of... well, as Kurt
-          | Vonnegut says, "and so on."
+          | In a sense, 'category' is itself metadata about 'pet': it
+          | names the metadata that names the content. A 'category' may
+          | then relate to metadata called 'type', which is a name for
+          | metadata about the content that names it a 'cat', and so we
+          | have some content described as 'pet cat' now, where 'pet' is
+          | described as the 'category' and 'cat' is described as the
+          | 'type' and the 'category' changes what possible values a
+          | 'type' may have and... well, as Kurt Vonnegut says, "and so
+          | on."
         p
           | Practically, we can simply look at long strings of names,
           | relations, and self-desribing metadata as one piece of
@@ -133,12 +183,12 @@ include /blog-mixins
           |
           | `category=pet&type=cat&so_on=...`.
         p
-          | So what does it mean? Often, nothing. Not to us, anyway. While
+          | What does all this metadata mean? Well... that depends. While
           | saying "pet" is the "category" and "cat" is the "type" might
-          | be more informative than just saying "pet&cat," we still don't
-          | know that "category" or "type" means. Metadata may try to
-          | describe itself, but ultimately it still has to be
-          | interpreted.
+          | be more informative than just saying "pet cat," words like
+          | "category" and "type" have a lot less intrinsic meaning.
+          | Metadata may attempt to self-describe, but it ultimately must
+          | be interpreted in order to be understood.
         p
           | In other words: all metadata has an _audience_.
         p
