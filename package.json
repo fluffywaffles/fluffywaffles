@@ -3,13 +3,13 @@
   "version": "0.0.0",
   "description": "personal website",
   "scripts": {
-    "pug": "pug -b ${npm_package_config_pug_source} ${npm_package_config_pug_source}",
+    "pug": "./pug-cli --basedir ${npm_package_config_pug_source_directory} --strip-prefix ${npm_package_config_pug_source_directory} --sources '${npm_package_config_pug_source_glob}'",
     "stylus": "stylus ${npm_package_config_stylus_source}",
     "js": "cp -r ${npm_package_config_js_source}",
     "build:setup": "mkdir ${npm_package_config_build_directory} && mkdir ${npm_package_config_build_directory}/styles",
     "build:clean": "rm -rf ${npm_package_config_build_directory}",
     "build:assets": "cp -r ${npm_package_config_assets_source} ${npm_package_config_build_directory}",
-    "build:pug": "npm run pug -- -o ${npm_package_config_build_directory}",
+    "build:pug": "npm run pug -- --outdir ${npm_package_config_build_directory}",
     "build:js": "npm run js -- ${npm_package_config_build_directory}",
     "build:stylus": "npm run stylus -- -o ${npm_package_config_build_directory}/styles",
     "build:copy-html": " cp -r src/html/* ${npm_package_config_build_directory}",
@@ -17,7 +17,7 @@
     "develop:setup": "mkdir ${npm_package_config_develop_directory} && mkdir ${npm_package_config_develop_directory}/styles",
     "develop:clean": "rm -rf ${npm_package_config_develop_directory}",
     "develop:assets": "cp -r ${npm_package_config_assets_source} ${npm_package_config_develop_directory}",
-    "develop:pug": "npm run pug -- -w -o ${npm_package_config_develop_directory} &",
+    "develop:pug": "npm run pug -- --outdir ${npm_package_config_develop_directory} &",
     "develop:js": "ln -s $(git rev-parse --show-toplevel)/${npm_package_config_js_source} ${npm_package_config_develop_directory}/js &",
     "develop:stylus": "npm run stylus -- -w -o ${npm_package_config_develop_directory}/styles &",
     "develop:serve": "browser-sync start --config bs-config.js",
@@ -34,7 +34,8 @@
       "source": "src/js"
     },
     "pug": {
-      "source": "src/pug"
+      "source_directory": "src/pug",
+      "source_glob": "src/pug/**.pug"
     },
     "stylus": {
       "source": "src/stylus"
@@ -62,7 +63,6 @@
   "devDependencies": {
     "browser-sync": "^2.26.13",
     "pug": "^3.0.2",
-    "pug-cli": "^1.0.0-alpha6",
     "stylus": "^0.54.8"
   }
 }
