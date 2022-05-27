@@ -51,7 +51,6 @@ expect_value() {
 }
 
 generate_build_script() {
-  local basedir
   local sources
   local strip_prefix
   local outdir
@@ -64,13 +63,6 @@ generate_build_script() {
         if expect_value ${option} "${1}"; then
           tracef 'option: strip-prefix="%s"\n' "${1}"
           strip_prefix="${1}"
-        fi
-        shift 1
-        ;;
-      "--basedir")
-        if expect_directory ${option} "${1}"; then
-          tracef 'option: basedir="%s"\n' "${1}"
-          basedir="${1}"
         fi
         shift 1
         ;;
@@ -130,7 +122,7 @@ generate_build_script() {
       const output_file_name = \`\${source_basename}.html\`
       const output_file = path.join(output_directory, output_file_name)
       const start = process.hrtime.bigint()
-      const html = pug.compileFile(source, { basedir: "${basedir}" })({ /* locals */ })
+      const html = pug.compileFile(source)({ /* locals */ })
       await fs.mkdir(output_directory, { recursive: true })
       await fs.writeFile(output_file, html)
       const end = process.hrtime.bigint()
