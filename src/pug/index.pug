@@ -9,22 +9,21 @@ include blog-mixins
       h1 fluffywaffles
     section#intro
       p.
-        Hello! <code><i>{insert obligatory emoji hand-wave}</i></code>.
+        Hello! #[code #[i {insert obligatory emoji hand-wave} ]].
       p.
         This world-wide website is where I will try to collect updoots.
         You can also find me on
-        <a href="https://www.github.com/fluffywaffles">github</a>, or maybe
-        <a href="https://twitter.com/_fluffywaffles">twitter</a>.
+        #[a(href="https://www.github.com/fluffywaffles") github], or maybe
+        #[a(href="https://twitter.com/_fluffywaffles") twitter].
     section#navigation
       +nav().panel(no-index)
     section#outro
       p.
         Some years ago, I published things on
-        <a href="https://medium.com/@Skorlir">Medium</a>. I stopped
-        doing that. From now on, new content will go here.
+        #[a(href="https://medium.com/@Skorlir") Medium]. I stopped doing
+        that. From now on, new content will go here.
       p.
         You may not need to see it, but the source code for this website
         is available on
-        <a href="https://www.github.com/fluffywaffles/fluffywaffles">
-        github</a>.
+        #[a(href="https://www.github.com/fluffywaffles/fluffywaffles") github].
   script(src='https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.4.1/snap.svg-min.js')
