@@ -81,6 +81,13 @@ generate_build_script() {
         fi
         shift 1
         ;;
+      *)
+        log_invalidf 'ERROR: option: unrecognized option: %s\n' ${option}
+        if [[ -n "${1}" && ! (${1} =~ --) ]]; then
+          errf 'ERROR: option: discarding likely argument of unrecognized option (%s): "%s"\n' ${option} "${1}"
+          shift 1
+        fi
+        ;;
     esac
   done
 
