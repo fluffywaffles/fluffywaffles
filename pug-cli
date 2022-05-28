@@ -145,7 +145,6 @@ generate_build_script() {
 EOF
 }
 
-tracef '%s %s\n' "${@}"
 errf 'generating build script...\n'
 TIMEFMT="TIME: %P cpu for %mE: %J"
 time (generate_build_script "${@}")
