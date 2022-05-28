@@ -92,7 +92,7 @@ generate_build_script() {
   done
 
   if [[ ${#invalid_options} -gt 0 ]]; then
-    errf 'WARN: some option arguments were invalid: (%s)\n' "${invalid_options[*]}"
+    errf 'WARN: some option were invalid: (%s)\n' "${invalid_options[*]}"
   fi
   if [[ ${errored} == "yes" ]]; then
     errf 'WARN: some error(s) occurred parsing options, see above.\n'
