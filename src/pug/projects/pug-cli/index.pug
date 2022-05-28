@@ -1,0 +1,59 @@
+include ../../blog-mixins
+
++page('projects: pug-cli')
+  main
+    header
+      +nav()(index, horizontal)
+      h1 Projects > pug-cli
+    section#intro
+      h2 A Little Script for Building Pug Templates
+      p.
+        Apparently #[a(href="https://github.com/pugjs/pug-cli") pug-cli]
+        is dead. Perhaps pug itself is dead, although slightly less so.
+        Regardless, #[code npm audit] error messages prompted me to
+        realize that pug-cli has not seen a commit since 2017.
+      p.
+        I decided to peek under the hood at pug-cli... and it's nothing.
+        For some reason, it pulls in a couple of pretty big dependencies,
+        and has a bit more "business" logic than I was expecting. At the
+        end of the day, here's what pug-cli should do:
+      ol
+        li Take pug files
+        li Compile them into html files
+      p.
+        The various dependencies of pug-cli are used for parsing
+        command-line arguments, adding color to console output, and
+        creating directories (apparently
+        #[code fs.mkdir('a/b/c', { recursive: true })] did not exist in
+        2017).
+      p.
+        So, okay. If you want to parse some command-line arguments, that
+        feels like an easier job for #[code zsh]. I don't need colored
+        console output, so we can forget about that. All I need is a
+        script that will #[code require("pug").compileFile(f)({})], in a
+        loop over a set of source files, and then write the resulting html
+        to an output directory. So:
+      ul
+        li #[code --sources]: pug files to compile.
+        li #[code --outdir]: directory for the resulting html files.
+        li
+          | #[code --strip-prefix]: strip a prefix from the source files.
+          | This is a nicer, more explicit version of the behavior of
+          | #[code @pugjs/pug-cli] when it is given a directory instead of
+          | a specific file for its input. Basically you can have your pug
+          | in #[code src/] and compile it to #[code dist/] without
+          | copying the #[code src/] part of the directory structure, so
+          | with e.g. #[code --strip-prefix src/pug --outdir dist], the
+          | source file #[code src/pug/projects/my-project/index.pug]
+          | will be output to #[code dist/projects/my-project/index.pug].
+      p.
+        Seems easy enough, and a couple hours (whoops) later, we've got
+        our own little pug-cli. It's about 160 lines, but it would be
+        substantially less if I wasn't obsessively tracking and logging
+        the time taken by various steps of the process. (It's surprisingly
+        slow, and node.js cold-boot startup time accounts for an average
+        of 40% of the time it takes to compile this site.)
+      p.
+        Without further ado...
+    section
+      iframe.code(src='./vim.html')

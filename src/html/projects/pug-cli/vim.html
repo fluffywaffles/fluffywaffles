@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>~/dev/personal/fluffywaffles.io/pug-cli.html</title>
+<meta name="Generator" content="Vim/8.0">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="zsh">
+<meta name="settings" content="use_css,pre_wrap,no_foldcolumn,expand_tabs,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="two-firewatch">
+<style>
+<!--
+pre { white-space: pre-wrap; font-family: monospace; color: #abb2bf; background-color: #282c34; }
+body { font-family: monospace; color: #abb2bf; background-color: #282c34; }
+* { font-size: 1em; }
+.Conditional { color: #56b6c2; }
+.Constant { color: #e06c75; }
+.Special { color: #6e88a6; }
+.String { color: #c8ae9d; }
+.Operator { color: #56b6c2; }
+.Keyword { color: #d6e9ff; }
+.Number { color: #e06c75; }
+.Repeat { color: #e06c75; }
+.PreProc { color: #d6e9ff; }
+.Type { color: #c8ae9d; }
+-->
+</style>
+</head>
+<body>
+<pre id='vimCodeElement'>
+<span class="PreProc">#!/bin/zsh</span>
+
+<span class="Keyword">setopt</span><span class="Constant"> extended_glob</span>
+<span class="Keyword">setopt</span><span class="Constant"> glob_star_short</span>
+
+<span class="Type">local</span> script=<span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">0</span><span class="PreProc">}</span><span class="String">&quot;</span>
+
+errf() {
+  <span class="Operator">&gt;</span>&amp;<span class="Number">2</span> <span class="Keyword">printf</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">@</span><span class="PreProc">}</span><span class="String">&quot;</span>
+}
+
+<span class="Type">local</span> errored=<span class="String">&quot;</span><span class="String">no</span><span class="String">&quot;</span>
+<span class="Type">local</span> invalid_options=()
+log_invalidf() {
+  errored=<span class="String">&quot;</span><span class="String">yes</span><span class="String">&quot;</span>
+  invalid_options+=(<span class="PreProc">${</span><span class="PreProc">2</span><span class="PreProc">}</span>)
+  errf <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">@</span><span class="PreProc">}</span><span class="String">&quot;</span>
+}
+
+tracef() {
+  [[ -n <span class="PreProc">${</span><span class="PreProc">TRACE</span><span class="PreProc">}</span> ]] &amp;&amp; errf <span class="String">&quot;</span><span class="String">TRACE: </span><span class="PreProc">${</span><span class="PreProc">@</span><span class="PreProc">}</span><span class="String">&quot;</span>
+}
+
+expect_directory() {
+  option=<span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span>
+  value=<span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">2</span><span class="PreProc">}</span><span class="String">&quot;</span>
+  expect_value <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span><span class="String">&quot;</span> &amp;&amp; <span class="Conditional">if</span> [[ ! -d <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span><span class="String">&quot;</span> ]]; <span class="Conditional">then</span>
+    log_invalidf <span class="String">'</span><span class="String">WARN: option: %s: requires directory, got: %s\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span><span class="String">&quot;</span>
+    errf         <span class="String">'</span><span class="String">      file %s\n</span><span class="String">'</span> <span class="String">&quot;</span><span class="PreProc">$(</span><span class="String">file </span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">})</span><span class="String">&quot;</span>
+    errf         <span class="String">'</span><span class="String">WARN: ignoring %s option and continuing.\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span>
+    <span class="Keyword">return</span> <span class="Number">1</span>
+  <span class="Conditional">fi</span>
+}
+
+expect_value() {
+  option=<span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span>
+  <span class="Conditional">if</span> [[ <span class="PreProc">${</span><span class="PreProc">#</span><span class="PreProc">}</span> -lt <span class="Number">1</span> ]]; <span class="Conditional">then</span>
+    log_invalidf <span class="String">'</span><span class="String">option: unexpected end of flags: no value given for: %s\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span>
+    <span class="Keyword">continue</span>
+  <span class="Conditional">fi</span>
+  value=<span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">2</span><span class="PreProc">}</span><span class="String">&quot;</span>
+  <span class="Conditional">if</span> [[ <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span><span class="String">&quot;</span> =~ -- ]]; <span class="Conditional">then</span>
+    log_invalidf <span class="String">'</span><span class="String">option: %s requires value, got other option: %s\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span>
+    <span class="Keyword">return</span> <span class="Number">1</span>
+  <span class="Conditional">fi</span>
+  <span class="Conditional">if</span> [[ -z <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">value</span><span class="PreProc">}</span><span class="String">&quot;</span> ]]; <span class="Conditional">then</span>
+    log_invalidf <span class="String">'</span><span class="String">ERROR: option: value is empty for: %s\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span>
+    <span class="Keyword">shift</span> <span class="Number">1</span>
+    <span class="Keyword">return</span> <span class="Number">1</span>
+  <span class="Conditional">fi</span>
+}
+
+generate_build_script() {
+  <span class="Type">local</span> sources
+  <span class="Type">local</span> strip_prefix
+  <span class="Type">local</span> outdir
+
+  <span class="Repeat">while</span> [[ <span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span> =~ -- ]]; <span class="Keyword">do</span>
+    option=<span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span>
+    <span class="Keyword">shift</span> <span class="Number">1</span>
+    <span class="Conditional">case</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="Conditional">in</span>
+      <span class="String">&quot;</span><span class="String">--strip-prefix</span><span class="String">&quot;</span>)
+        <span class="Conditional">if</span> expect_value <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>; <span class="Conditional">then</span>
+          tracef <span class="String">'</span><span class="String">option: strip-prefix=&quot;%s&quot;\n</span><span class="String">'</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+          strip_prefix=<span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+        <span class="Conditional">fi</span>
+        <span class="Keyword">shift</span> <span class="Number">1</span>
+        ;;
+      <span class="String">&quot;</span><span class="String">--sources</span><span class="String">&quot;</span>)
+        <span class="Conditional">if</span> expect_value <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>; <span class="Conditional">then</span>
+          tracef <span class="String">'</span><span class="String">option: sources=(%s)\n</span><span class="String">'</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+          sources=(<span class="PreProc">${</span><span class="PreProc">~1</span><span class="PreProc">}</span>)
+        <span class="Conditional">fi</span>
+        <span class="Keyword">shift</span> <span class="Number">1</span>
+        ;;
+      <span class="String">&quot;</span><span class="String">--outdir</span><span class="String">&quot;</span>)
+        mkdir --parents <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+        <span class="Conditional">if</span> expect_directory <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>; <span class="Conditional">then</span>
+          tracef <span class="String">'</span><span class="String">option: outdir=&quot;%s&quot;\n</span><span class="String">'</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+          outdir=<span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+        <span class="Conditional">fi</span>
+        <span class="Keyword">shift</span> <span class="Number">1</span>
+        ;;
+      *)
+        log_invalidf <span class="String">'</span><span class="String">ERROR: option: unrecognized option: %s\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span>
+        <span class="Conditional">if</span> [[ -n <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span> &amp;&amp; ! (<span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span> =~ --) ]]; <span class="Conditional">then</span>
+          errf <span class="String">'</span><span class="String">ERROR: option: discarding likely argument of unrecognized option (%s): &quot;%s&quot;\n</span><span class="String">'</span> <span class="PreProc">${</span><span class="PreProc">option</span><span class="PreProc">}</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">1</span><span class="PreProc">}</span><span class="String">&quot;</span>
+          <span class="Keyword">shift</span> <span class="Number">1</span>
+        <span class="Conditional">fi</span>
+        ;;
+    <span class="Conditional">esac</span>
+  <span class="Keyword">done</span>
+
+  <span class="Conditional">if</span> [[ <span class="PreProc">${</span><span class="PreProc">#invalid_options</span><span class="PreProc">}</span> -gt <span class="Number">0</span> ]]; <span class="Conditional">then</span>
+    errf <span class="String">'</span><span class="String">WARN: some option were invalid: (%s)\n</span><span class="String">'</span> <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">invalid_options[*]</span><span class="PreProc">}</span><span class="String">&quot;</span>
+  <span class="Conditional">fi</span>
+  <span class="Conditional">if</span> [[ <span class="PreProc">${</span><span class="PreProc">errored</span><span class="PreProc">}</span> == <span class="String">&quot;</span><span class="String">yes</span><span class="String">&quot;</span> ]]; <span class="Conditional">then</span>
+    errf <span class="String">'</span><span class="String">WARN: some error(s) occurred parsing options, see above.\n</span><span class="String">'</span>
+    <span class="Keyword">return</span> <span class="Number">1</span>
+  <span class="Conditional">fi</span>
+
+  <span class="Type">local</span> sources_json=<span class="String">&quot;</span><span class="String">[</span><span class="Special">\&quot;</span><span class="PreProc">${</span><span class="PreProc">(j:</span><span class="String">&quot;</span><span class="String">,</span><span class="String">&quot;</span><span class="PreProc">:)sources</span><span class="PreProc">}</span><span class="Special">\&quot;</span><span class="String">]</span><span class="String">&quot;</span>
+  cat <span class="Operator">&gt;</span> .build.tmp.mjs <span class="Operator">&lt;&lt;EOF</span>
+<span class="String">    import * as fs   from 'node:fs/promises'</span>
+<span class="String">    import * as path from 'node:path'</span>
+<span class="String">    import pug       from 'pug'</span>
+
+<span class="String">    function ms_time_diff(start, end) {</span>
+<span class="String">      const us = Number(BigInt.asUintN(64, (end - start) / 1000n))</span>
+<span class="String">      return us / 1000</span>
+<span class="String">    }</span>
+
+<span class="String">    function format_ms(number) {</span>
+<span class="String">      return number.toFixed(3).toString().padStart(8, ' ')</span>
+<span class="String">    }</span>
+
+<span class="String">    const sources = </span><span class="PreProc">${</span><span class="PreProc">sources_json</span><span class="PreProc">}</span>
+<span class="String">    const longest_source_length = Math.max.apply(Math, sources.map(s =&gt; s.length))</span>
+<span class="String">    const strip_prefix = &quot;</span><span class="PreProc">${</span><span class="PreProc">strip_prefix</span><span class="PreProc">}</span><span class="String">&quot;</span>
+
+<span class="String">    const total_start = process.hrtime.bigint()</span>
+<span class="String">    for (const source of sources) {</span>
+<span class="String">      const source_directory = path.dirname(source)</span>
+<span class="String">      const source_basename  = path.basename(source, &quot;.pug&quot;)</span>
+<span class="String">      const source_base_index = source_directory.indexOf(strip_prefix)</span>
+<span class="String">      const source_base_path = source_directory.substring(source_base_index + strip_prefix.length)</span>
+<span class="String">      const output_directory = path.join(&quot;</span><span class="PreProc">${</span><span class="PreProc">outdir</span><span class="PreProc">}</span><span class="String">&quot;, source_base_path)</span>
+<span class="String">      const output_file_name = </span><span class="Special">\`\$</span><span class="String">{source_basename}.html</span><span class="Special">\`</span>
+<span class="String">      const output_file = path.join(output_directory, output_file_name)</span>
+<span class="String">      const start = process.hrtime.bigint()</span>
+<span class="String">      const html = pug.compileFile(source)({ /* locals */ })</span>
+<span class="String">      await fs.mkdir(output_directory, { recursive: true })</span>
+<span class="String">      await fs.writeFile(output_file, html)</span>
+<span class="String">      const end = process.hrtime.bigint()</span>
+<span class="String">      console.log(''</span>
+<span class="String">        + </span><span class="Special">\`</span><span class="String">+ </span><span class="Special">\$</span><span class="String">{format_ms(ms_time_diff(start, end))}ms</span><span class="Special">\`</span>
+<span class="String">        + </span><span class="Special">\`</span><span class="String">  </span><span class="Special">\$</span><span class="String">{source.padEnd(longest_source_length, ' ')}</span><span class="Special">\`</span>
+<span class="String">        + </span><span class="Special">\`</span><span class="String"> → </span><span class="Special">\$</span><span class="String">{output_file}</span><span class="Special">\`</span>
+<span class="String">      )</span>
+<span class="String">    }</span>
+<span class="String">    const total_end = process.hrtime.bigint()</span>
+<span class="String">    const total_diff = ms_time_diff(total_start, total_end)</span>
+<span class="String">    console.log(</span><span class="Special">\`</span><span class="String">σ </span><span class="Special">\$</span><span class="String">{format_ms(total_diff)}ms (internal) total compile time</span><span class="Special">\`</span><span class="String">)</span>
+<span class="String">    console.log(</span><span class="Special">\`</span><span class="String">Σ </span><span class="Special">\$</span><span class="String">{format_ms(process.uptime() * 1000)}ms (process)  total lifetime</span><span class="Special">\`</span><span class="String">)</span>
+<span class="Operator">EOF</span>
+}
+
+errf <span class="String">'</span><span class="String">generating build script...\n</span><span class="String">'</span>
+TIMEFMT=<span class="String">&quot;</span><span class="String">TIME: %P cpu for %mE: %J</span><span class="String">&quot;</span>
+<span class="Special">time</span> (generate_build_script <span class="String">&quot;</span><span class="PreProc">${</span><span class="PreProc">@</span><span class="PreProc">}</span><span class="String">&quot;</span>)
+<span class="Conditional">if</span> [[ <span class="PreProc">$?</span> -ne <span class="Number">0</span> ]]; <span class="Conditional">then</span>
+  errf <span class="String">'</span><span class="String">FATAL: failed to generate build script!\n</span><span class="String">'</span>
+  <span class="Keyword">exit</span> <span class="Number">1</span>
+<span class="Conditional">fi</span>
+errf <span class="String">'</span><span class="String">invoking generated build script...\n</span><span class="String">'</span>
+<span class="Special">time</span> node .build.tmp.mjs
+rm .build.tmp.mjs
+</pre>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

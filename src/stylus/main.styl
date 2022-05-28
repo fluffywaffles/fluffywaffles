@@ -3,6 +3,7 @@
 // Font & layout variables (only works w/ mononoki)
 // HACK(jordan): this ratio is bullshitted by trial-and-error
 font-size = 16px
+small-font-size = 14px
 mono-font-size = 17px
 mono-character-height-width-ratio = (105/200)
 fluffywaffles-characters = 13
@@ -131,10 +132,15 @@ nav
     width calc(100% - 20px)
     background-color transparent
 
+code
+  background darken(body-background-color, 33%)
+  padding 3px 5px
+  font-size small-font-size
+
 ul
-  margin 0
-  padding 0
-  list-style-type none
+  // margin 0
+  // padding 0
+  list-style-type disc
   li
     margin 10px 0
     padding 0
