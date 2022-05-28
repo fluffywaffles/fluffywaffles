@@ -92,7 +92,6 @@ generate_build_script() {
     return 1
   fi
 
-  local sources=(./src/pug/**.pug)
   local sources_json="[\"${(j:",":)sources}\"]"
   cat > .build.tmp.mjs <<EOF
     import * as fs   from 'node:fs/promises'
