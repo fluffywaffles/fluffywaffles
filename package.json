@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "personal website",
   "scripts": {
-    "pug": "./pug-cli --basedir ${npm_package_config_pug_source_directory} --strip-prefix ${npm_package_config_pug_source_directory} --sources '${npm_package_config_pug_source_glob}'",
+    "pug": "./pug-cli --strip-prefix ${npm_package_config_pug_source_directory} --sources \"${npm_package_config_pug_source_glob}\"",
     "stylus": "stylus ${npm_package_config_stylus_source}",
     "js": "cp -r ${npm_package_config_js_source}",
     "build:setup": "mkdir ${npm_package_config_build_directory} && mkdir ${npm_package_config_build_directory}/styles",
